@@ -1,0 +1,236 @@
+package reverse
+
+import (
+	"context"
+	"crypto/tls"
+	"fmt"
+	"net/http"
+	"net/http/httputil"
+	"net/url"
+	"strconv"
+	"time"
+
+	"goblin/internal/options"
+	"goblin/internal/plugin"
+	"goblin/pkg/utils"
+
+	log "unknwon.dev/clog/v2"
+)
+
+const (
+	DefaultTimeOut = 5
+)
+
+func (s *Servers) InitServer(revConf *Reverse) *http.Server {
+
+	mux := http.NewServeMux()
+	//
+
+	for uri, content := range plugin.StaticFiles {
+		log.Info("set route: %s", uri)
+		mux.HandleFunc(uri, func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/javascript")
+			w.Write(content)
+		})
+	}
+
+	// 路径处理 https://zhuanlan.zhihu.com/p/102619401
+	mux.Handle(s.StaticURI, http.StripPrefix(s.StaticURI, http.FileServer(http.Dir(s.StaticDir)))) // /static
+	// 代理路由
+	mux.HandleFunc("/", revConf.ServeHTTP)
+
+	var muxMiddleware http.Handler = mux
+
+	server := &http.Server{
+		ReadTimeout:       s.ReadHeaderTimeout * time.Second,
+		WriteTimeout:      s.WriteTimeout * time.Second,
+		IdleTimeout:       s.IdleTimeout * time.Second,
+		ReadHeaderTimeout: s.ReadHeaderTimeout * time.Second,
+		Handler:           muxMiddleware,
+		TLSConfig:         tlsConfig,
+		TLSNextProto:      make(map[string]func(*http.Server, *tls.Conn, http.Handler)),
+	}
+
+	return server
+}
+
+func (s *Servers) startListeners() {
+	for _, srvHTTP := range s.HTTP {
+		go func(srv *http.Server) { log.Fatal("%v", srv.ListenAndServe()) }(srvHTTP)
+	}
+
+	for _, srvHTTPS := range s.HTTPS {
+		go func(srv *http.Server) { log.Fatal("%v", srv.ListenAndServeTLS("", "")) }(srvHTTPS)
+	}
+}
+
+func (s *Servers) shutdownServers(ctx context.Context) {
+	for k, v := range s.HTTP {
+		err := v.Shutdown(ctx)
+		if err != nil {
+			log.Error("Cannot shutdown server %s: %s\n", k, err)
+		}
+	}
+
+	for k, v := range s.HTTPS {
+		err := v.Shutdown(ctx)
+		if err != nil {
+			log.Fatal("Cannot shutdown server %s: %s", k, err)
+		}
+	}
+}
+
+func initReverse(options *options.Options) (revMap map[string]struct {
+	SSL     bool
+	Reverse *Reverse
+	Listen  string
+}) {
+	var err error
+	// 代理初始化
+	if options.Proxy.ProxyServerAddr != "" {
+		ProxyServerAddr, err = url.Parse(options.Proxy.ProxyServerAddr)
+		if err != nil {
+			log.Error("proxy resolve:%s", err.Error())
+		}
+	} else {
+		ProxyServerAddr = nil
+	}
+	//todo 待重构处理
+	// 设置代理请求头
+	ProxyHeader = options.Server.ProxyHeader
+	// 模板变量初始化
+	plugin.PluginVariable.Static = options.Server.StaticURI
+	// 设置日志
+	logLevel = options.Loglevel
+	// 初始化证书
+	tlsConfig.Certificates = []tls.Certificate{}
+	// 初始化版本
+	Version = options.VersionInfo
+	plugin.Version = options.VersionInfo
+	revMap = make(map[string]struct {
+		SSL     bool
+		Reverse *Reverse
+		Listen  string
+	})
+	fmt.Printf("Plugin Dir: %s\n", options.Proxy.PluginDir)
+	for host, v := range options.Proxy.Sites {
+		hAddr, port, err := utils.SplitHost(host)
+		portstr := strconv.Itoa(port)
+		if err != nil {
+			panic(err)
+		}
+		if v.SSL {
+			tlsc, err := tls.LoadX509KeyPair(v.CACert, v.CAKey)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+			tlsConfig.Certificates = append(tlsConfig.Certificates, tlsc)
+		}
+		if options.Proxy.ProxyServerAddr != "" {
+			if v.SSL {
+
+				//todo SSL 支持
+				//log.Fatal("Temporarily does not support https Please wait")
+				fmt.Printf("goblin: https://%s ==> [ proxy: %s ] ==> %s, Plugin: [ %v ]\n", host, options.Proxy.ProxyServerAddr, v.ProxyPass, v.Rules)
+			} else {
+				fmt.Printf("goblin: http://%s ==> [ proxy: %s ] ==> %s, Plugin: [ %v ]\n", host, options.Proxy.ProxyServerAddr, v.ProxyPass, v.Rules)
+			}
+		} else {
+			if v.SSL {
+				//todo SSL 支持
+				//log.Fatal("Temporarily does not support https Please wait")
+				fmt.Printf("goblin: https://%s ==> %s, Plugin: [ %v ]\n", host, v.ProxyPass, v.Rules)
+			} else {
+				fmt.Printf("goblin: http://%s  ==> %s, Plugin: [ %v ]\n", host, v.ProxyPass, v.Rules)
+			}
+		}
+
+		// todo 应该为域名或者 host 不该为 IP:Port
+		// revmap 填充数据
+		if rev, ok := revMap[portstr]; ok {
+			if port == 80 || port == 443 {
+				rev.Reverse.AllowSite[hAddr] = v.ProxyPass
+			}
+			rev.Reverse.AllowSite[host] = v.ProxyPass
+			rev.Reverse.AllowSite[hAddr] = v.ProxyPass
+
+		} else {
+			revMap[portstr] = struct {
+				SSL     bool
+				Reverse *Reverse
+				Listen  string
+			}{
+				SSL:    v.SSL,
+				Listen: v.ListenIP,
+				Reverse: &Reverse{
+					AllowSite: map[string]string{
+						host:  v.ProxyPass, // todo 尽量移除
+						hAddr: v.ProxyPass,
+					},
+					HostProxy:             make(map[string]*httputil.ReverseProxy),
+					MaxIdleConns:          options.Proxy.MaxIdleConns,
+					IdleConnTimeout:       options.Proxy.IdleConnTimeout,
+					TLSHandshakeTimeout:   options.Proxy.TLSHandshakeTimeout,
+					ExpectContinueTimeout: options.Proxy.ExpectContinueTimeout,
+					MaxContentLength:      options.Proxy.MaxContentLength,
+					DingTalk:              options.Notice.DingTalk,
+				}}
+
+		}
+		if v.Rules != "" {
+			rule, err := plugin.LoadPlugin(options.Proxy.PluginDir + "/" + v.Rules + ".yaml")
+			if err != nil {
+				log.Fatal("plugin err please check: %s", v.Rules)
+
+			}
+			plugin.Plugins[host] = rule
+			plugin.Plugins[hAddr] = rule
+
+		}
+	}
+	return revMap
+}
+
+func InitServerConfig(options *options.Options) *Servers {
+	// cache 初始化
+	cacheRspFile.Type = options.CacheType
+	cacheRspFile.Size = options.CacheSize
+
+	// server 初始化
+	revMap := initReverse(options)
+	servers := &Servers{
+		HTTP:              make(map[string]*http.Server),
+		HTTPS:             make(map[string]*http.Server),
+		ReadTimeout:       options.Server.ReadTimeout,
+		WriteTimeout:      options.Server.WriteTimeout,
+		IdleTimeout:       options.Server.IdleTimeout,
+		ReadHeaderTimeout: options.Server.ReadHeaderTimeout,
+		StaticURI:         options.Server.StaticURI,
+		StaticDir:         options.Server.StaticDir,
+	}
+	for portstr, revconf := range revMap {
+		if revconf.SSL {
+			servers.HTTPS[portstr] = servers.InitServer(revconf.Reverse)
+			servers.HTTPS[portstr].Addr = revconf.Listen + ":" + portstr
+			fmt.Printf("ListenServer: https://%s\n", servers.HTTPS[portstr].Addr)
+		} else {
+			servers.HTTP[portstr] = servers.InitServer(revconf.Reverse)
+			servers.HTTP[portstr].Addr = revconf.Listen + ":" + portstr
+			fmt.Printf("ListenServer: http://%s\n", servers.HTTP[portstr].Addr)
+		}
+	}
+
+	return servers
+}
+
+func (s *Servers) Start() {
+	s.startListeners()
+}
+
+func (s *Servers) Stop() {
+	ctx, cancel := context.WithTimeout(context.Background(), DefaultTimeOut*time.Second)
+	defer cancel()
+
+	log.Warn("Shutting down servers...")
+	s.shutdownServers(ctx)
+}

@@ -1,0 +1,81 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+# https://goreleaser.com/customization/build/
+project_name: goblin
+builds:
+  - env: [CGO_ENABLED=0]
+    binary: goblin
+    main: ./cmd/goblin/goblin.go
+    ldflags:
+      - -s -w -X goblin/internal/options.Version={{.Version}} -X goblin/internal/options.Commit={{.ShortCommit}} -X goblin/internal/options.Release={{.Date}} -X goblin/internal/options.Branch={{.Branch}}
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - 386
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: 386
+archives:
+  -
+    format_overrides:
+      - goos: windows
+        format: zip
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+dockers:
+  - image_templates: ["becivells/{{ .ProjectName }}:{{ .Version }}-amd64"]
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - --platform=linux/amd64
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/becivells/{{ .ProjectName }}
+      - --label=org.opencontainers.image.source=https://github.com/becivells/{{ .ProjectName }}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=MIT
+  - image_templates: ["becivells/{{ .ProjectName }}:{{ .Version }}-arm64v8"]
+    goarch: arm64
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - --platform=linux/arm64/v8
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/becivells/{{ .ProjectName }}
+      - --label=org.opencontainers.image.source=https://github.com/becivells/{{ .ProjectName }}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=MIT
+docker_manifests:
+  - name_template: "becivells/{{ .ProjectName }}:{{ .Version }}"
+    image_templates:
+      - becivells/{{ .ProjectName }}:{{ .Version }}-amd64
+      - becivells/{{ .ProjectName }}:{{ .Version }}-arm64v8
+  - name_template: "becivells/{{ .ProjectName }}:latest"
+    image_templates:
+      - becivells/{{ .ProjectName }}:{{ .Version }}-amd64
+      - becivells/{{ .ProjectName }}:{{ .Version }}-arm64v8
+nfpms:
+  - maintainer: becivells
+    description: goblin is a red team tools
+    homepage: https://github.com/becivells/goblin
+    license: MIT
+    formats:
+      - deb
+      - rpm
