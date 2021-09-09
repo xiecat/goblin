@@ -185,14 +185,14 @@ func (base *BasePlugin) setInitConfig() {
 						// BodyFile
 						if rp.Response.Body.File != "" {
 							fname := rp.Response.Body.File
-							b, err := ioutil.ReadFile(fname) // just pass the file name
-							if err != nil {
-								log.Fatal("%s", err.Error())
-							}
 							if _, ok := replace.BodyFiles[fname]; ok {
-								log.Trace("[plugin] fname: %s duplicate files", fname)
+								log.Trace("[plugin] Parse:Response.Body.File fname: %s duplicate files", fname)
 							} else {
-								log.Trace("[plugin] BodyFile load %s", fname)
+								b, err := ioutil.ReadFile(fname) // just pass the file name
+								if err != nil {
+									log.Fatal("%s", err.Error())
+								}
+								log.Trace("[plugin] Parse:Response.Body.File  load %s", fname)
 								replace.BodyFiles[fname] = b
 							}
 						}
