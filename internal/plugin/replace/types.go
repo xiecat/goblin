@@ -6,6 +6,10 @@ import (
 
 var Method = []string{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE"}
 
+var (
+	BodyFiles = make(map[string][]byte) //插件系统注入的js静态文件
+)
+
 type Replace struct {
 	Request  *Request  `yaml:"Request"`
 	Response *Response `yaml:"Response"`

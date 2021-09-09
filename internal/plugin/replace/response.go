@@ -74,15 +74,11 @@ func (rpRule *Response) Response(maxContentLength int, response *http.Response) 
 	}
 	// file 处理 有 file 了就直接处理结束不要替换追加
 	if strings.TrimSpace(rpRule.Body.File) != "" {
-		// todo 并发有问题需要处理加到缓存里面
-		b, err := ioutil.ReadFile(rpRule.Body.File) // just pass the file name
-		if err != nil {
-			return err
-		}
+		// todo 后期建议加到缓存里面
+		b := BodyFiles[rpRule.Body.File]
 		response.Body = ioutil.NopCloser(bytes.NewReader(b))
 		response.ContentLength = int64(len(b))
 		response.Header.Set("Content-Length", strconv.Itoa(len(b)))
-		return nil
 	}
 	// 检查 Content-Length 如果大于 MaxContentLength 直接返回不处理当 maxCountlength 小于 0 放行
 	if cleng == -1 && maxContentLength > 0 {

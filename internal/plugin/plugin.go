@@ -140,7 +140,7 @@ func (base *BasePlugin) setInitConfig() {
 					}
 					fname = "/" + PluginVariable.Static + "/" + fname
 					if _, ok := StaticFiles[fname]; ok {
-						log.Fatal("fname: %s 重复请检查", fname)
+						log.Fatal("fname: %s duplicate files pleace check", fname)
 					}
 					rule.InjectJs.EvilJs = fname
 					StaticFiles[fname] = b
@@ -182,7 +182,20 @@ func (base *BasePlugin) setInitConfig() {
 								rp.Response.Header["Location"] = tpl.String()
 							}
 						}
-						// ReplaceStr
+						// BodyFile
+						if rp.Response.Body.File != "" {
+							fname := rp.Response.Body.File
+							b, err := ioutil.ReadFile(fname) // just pass the file name
+							if err != nil {
+								log.Fatal("%s", err.Error())
+							}
+							if _, ok := replace.BodyFiles[fname]; ok {
+								log.Trace("[plugin] fname: %s duplicate files", fname)
+							} else {
+								log.Trace("[plugin] BodyFile load %s", fname)
+								replace.BodyFiles[fname] = b
+							}
+						}
 						// replace 可能为nil
 						if rp.Response.Body.ReplaceStr != nil {
 							// str 处理
