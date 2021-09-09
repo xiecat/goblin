@@ -1,5 +1,7 @@
 # goblin 钓鱼演练工具
+![GitHub branch checks state](https://img.shields.io/github/checks-status/xiecat/goblin/master)
 [![Latest release](https://img.shields.io/github/v/release/xiecat/goblin)](https://github.com/becivells/iconhash/releases/latest)
+![GitHub Release Date](https://img.shields.io/github/release-date/xiecat/goblin)
 ![GitHub All Releases](https://img.shields.io/github/downloads/xiecat/goblin/total)
 [![GitHub issues](https://img.shields.io/github/issues/xiecat/goblin)](https://github.com/xiecat/goblin/issues)
 [![Docker Pulls](https://img.shields.io/docker/pulls/becivells/goblin)](https://hub.docker.com/r/becivells/goblin)
@@ -279,7 +281,7 @@ Rule:
 
 ### Mac 程序替换
 
-mac 下载地址实在 js 里面这里可以直接替换到也可以通过跳转替换
+mac 下载地址是在 js 里面这里可以直接替换，也可以通过跳转替换
 
 修改路径跳转到 goblin 地址
 
