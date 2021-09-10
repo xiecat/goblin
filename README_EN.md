@@ -1,7 +1,7 @@
 # Goblin for Phishing Exercise Tools
 
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/xiecat/goblin/master) [![Latest release](https://img.shields.io/github/v/release/xiecat/goblin)](https://github.com/becivells/iconhash/releases/latest) ![GitHub Release Date](https://img.shields.io/github/release-date/xiecat/goblin) ![GitHub All Releases](https://img.shields.io/github/downloads/xiecat/goblin/total) [![GitHub issues](https://img.shields.io/github/issues/xiecat/goblin)](https://github.com/xiecat/goblin/issues) [![Docker Pulls](https://img.shields.io/docker/pulls/becivells/goblin)](https://hub.docker.com/r/becivells/goblin) ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/becivells/goblin)      
-[[中文 Readme 点我]](https://github.com/zhzyker/dismap/blob/main/readme.md)  
+[[中文 Readme 点我]](https://github.com/xiecat/goblin/blob/master/README.md)  
 Goblin is a phishing rehearsal tool for red-blue confrontation. By using a reverse proxy, it is possible to obtain information about a user without affecting the user's operation perceptibly, or to induce the user's operation. The purpose of hiding the server side can also be achieved by using a proxy. Built-in plug-in, through a simple configuration, quickly adjust the content of the web page to achieve a better exercise effect.
 
 ## Features
