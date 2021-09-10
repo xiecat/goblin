@@ -41,9 +41,9 @@ func (options *Options) validataProxySite() {
 		if err != nil {
 			log.Fatal("Proxy host: %s  format error must have port eg(127.0.0.1:80,www.xxx.com:80)", addr)
 		}
-		if !utils.IsHost(addr) {
-			log.Fatal("Proxy host is not ip or host please check host: %s,Addr: %s", host, addr)
-		}
+		//if !utils.IsHost(addr) {
+		//	log.Fatal("Proxy host is not ip or host please check host: %s,Addr: %s", host, addr)
+		//}
 		if !utils.IsPort(port) {
 			log.Fatal("Port range of (0,65535] host: %s", host)
 		}
@@ -61,7 +61,7 @@ func (options *Options) validataProxySite() {
 			}
 			_, err := tls.LoadX509KeyPair(v.CACert, v.CAKey)
 			if err != nil {
-				fmt.Printf("cert format err: %s", err.Error())
+				log.Fatal("cert format err: %s", err.Error())
 			}
 
 			httpsPort[port] = host
