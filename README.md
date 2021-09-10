@@ -6,7 +6,9 @@
 [![GitHub issues](https://img.shields.io/github/issues/xiecat/goblin)](https://github.com/xiecat/goblin/issues)
 [![Docker Pulls](https://img.shields.io/docker/pulls/becivells/goblin)](https://hub.docker.com/r/becivells/goblin)
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/becivells/goblin)      
+[[English readme Click Me]](https://github.com/zhzyker/dismap/blob/main/readme-en.md)  
 goblin 是一款适用于红蓝对抗的钓鱼演练工具。通过反向代理，可以在不影响用户操作的情况下无感知的获取用户的信息，或者诱导用户操作。也可以通过使用代理方式达到隐藏服务端的目的。内置插件，通过简单的配置，快速调整网页内容以达到更好的演练效果
+
 
 ## 特点: 
 
