@@ -120,14 +120,13 @@ func LoadPlugin(pathFile string) (*BasePlugin, error) {
 	plugin := &BasePlugin{}
 
 	err = yaml.Unmarshal(content, plugin)
-	plugin.setInitConfig()
 	if err != nil {
 		return nil, fmt.Errorf("[%s] yaml format err:%s ", pathFile, err.Error())
 	}
 	return plugin, nil
 }
 
-func (base *BasePlugin) setInitConfig() {
+func (base *BasePlugin) SetInitConfig() {
 	for _, rule := range base.Rule {
 		// InjectJs 检查
 		if rule.InjectJs != nil {
@@ -165,24 +164,24 @@ func (base *BasePlugin) setInitConfig() {
 		if rule.Replace != nil {
 			for _, rp := range rule.Replace {
 				if rp.Response != nil {
-					if rp.Response.Body != nil {
-						if rp.Response.Header != nil {
-							if location, ok := rp.Response.Header["Location"]; ok {
-								// 替换并且检查替换的变量
-								tmpl, err := template.New("test1").Parse(location)
-								if err != nil {
-									log.Fatal(err.Error())
-								}
-								var tpl bytes.Buffer
-								err = tmpl.Execute(&tpl, PluginVariable)
-								if err != nil {
-									log.Fatal(err.Error())
-								}
-								log.Info("[plugin] Parse:Response.Header.Location: %s ==> %s ", location, tpl.String())
-								rp.Response.Header["Location"] = tpl.String()
+					if rp.Response.Header != nil {
+						if location, ok := rp.Response.Header["Location"]; ok {
+							// 替换并且检查替换的变量
+							tmpl, err := template.New("test1").Parse(location)
+							if err != nil {
+								log.Fatal(err.Error())
 							}
+							var tpl bytes.Buffer
+							err = tmpl.Execute(&tpl, PluginVariable)
+							if err != nil {
+								log.Fatal(err.Error())
+							}
+							log.Info("[plugin] Parse:Response.Header.Location: %s ==> %s ", location, tpl.String())
+							rp.Response.Header["Location"] = tpl.String()
 						}
-						// BodyFile
+					}
+					// BodyFile
+					if rp.Response.Body != nil {
 						if rp.Response.Body.File != "" {
 							fname := rp.Response.Body.File
 							if _, ok := replace.BodyFiles[fname]; ok {

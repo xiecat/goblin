@@ -183,6 +183,8 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 				log.Fatal("plugin err please check: %s", v.Rules)
 
 			}
+			// 初始化插件配置
+			rule.SetInitConfig()
 			plugin.Plugins[host] = rule
 			plugin.Plugins[hAddr] = rule
 
