@@ -39,7 +39,7 @@ func (options *Options) validataProxySite() {
 
 		addr, port, err := utils.SplitHost(host)
 		if err != nil {
-			panic(err)
+			log.Fatal("Proxy host: %s  format error must have port eg(127.0.0.1:80,www.xxx.com:80)", addr)
 		}
 		if !utils.IsHost(addr) {
 			log.Fatal("Proxy host is not ip or host please check host: %s,Addr: %s", host, addr)
