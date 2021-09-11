@@ -25,6 +25,19 @@ func (reverse *Reverse) Director(host string) func(request *http.Request) {
 		request.URL.Scheme = remote.Scheme
 		request.URL.Host = remote.Host
 		request.Host = remote.Host //
+		referer := request.Header.Get("Referer")
+		if referer != "" {
+			refURL, err := url.Parse(referer)
+			if err != nil {
+				request.Header.Set("Referer", target)
+				log.Trace("target parse fail: %s", err.Error())
+			} else {
+				refURL.Host = remote.Host
+				request.Header.Set("Referer", refURL.String())
+				log.Trace("referer parse : %s", refURL.String())
+			}
+		}
+
 		if targetQuery == "" || request.URL.RawQuery == "" {
 			request.URL.RawQuery = targetQuery + request.URL.RawQuery
 		} else {
