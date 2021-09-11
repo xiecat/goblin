@@ -19,13 +19,19 @@ goblin 是一款适用于红蓝对抗的钓鱼演练工具。通过反向代理�
 * 支持修改响应内容或者 goblin 请求的内容
 * 支持通过代理方式隐藏真实 IP
 
-快速使用
-
+快速使用 demo
+1. flash demo
+```shell
+docker run -it --rm  -p 8083:8083 -p 8084:8084 -p 8085:8085 -p 8086:8086  becivells/goblin-demo-flash
 ```
-docker run -it -v $(pwd):/goblin/ -p 8084:8084 becivells/goblin
+本机访问 [http://127.0.0.1:8083](http://127.0.0.1:8083) 示例链接为: [goblin-flash-demo](https://github.com/xiecat/goblin-demo/tree/master/goblin-demo-flash)
+
+2. 默认代理百度的 demo
+```shell
+docker run -it --rm -v $(pwd):/goblin/ -p 8084:8084 becivells/goblin
 ```
 
-访问 [http://127.0.0.1:8084](http://127.0.0.1:8084)
+本机访问 [http://127.0.0.1:8084](http://127.0.0.1:8084)
 
 如果服务器端部署需要修改 ip 地址
 
