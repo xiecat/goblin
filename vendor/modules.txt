@@ -37,6 +37,9 @@ github.com/oschwald/maxminddb-golang
 # github.com/patrickmn/go-cache v2.1.0+incompatible
 ## explicit
 github.com/patrickmn/go-cache
+# github.com/projectdiscovery/stringsutil v0.0.0-20210830151154-f567170afdd9
+## explicit; go 1.16
+github.com/projectdiscovery/stringsutil
 # github.com/sinlov/qqwry-golang v0.0.0-20191204062238-bea9868bbbf4
 ## explicit; go 1.13
 github.com/sinlov/qqwry-golang/qqwry

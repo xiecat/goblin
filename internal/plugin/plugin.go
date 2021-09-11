@@ -126,7 +126,7 @@ func LoadPlugin(pathFile string) (*BasePlugin, error) {
 	return plugin, nil
 }
 
-func (base *BasePlugin) SetInitConfig() {
+func (base *BasePlugin) SetInitConfig(PluginVar *TmpVariable) {
 	for _, rule := range base.Rule {
 		// InjectJs 检查
 		if rule.InjectJs != nil {
@@ -137,7 +137,7 @@ func (base *BasePlugin) SetInitConfig() {
 					if err != nil {
 						log.Fatal("%s", err.Error())
 					}
-					fname = "/" + PluginVariable.Static + "/" + fname
+					fname = "/" + PluginVar.Static + "/" + fname
 					if _, ok := StaticFiles[fname]; ok {
 						log.Fatal("fname: %s duplicate files pleace check", fname)
 					}
@@ -150,7 +150,7 @@ func (base *BasePlugin) SetInitConfig() {
 					log.Fatal(err.Error())
 				}
 				var tpl bytes.Buffer
-				err = tmpl.Execute(&tpl, PluginVariable)
+				err = tmpl.Execute(&tpl, PluginVar)
 				if err != nil {
 					log.Fatal(err.Error())
 				}
@@ -167,17 +167,12 @@ func (base *BasePlugin) SetInitConfig() {
 					if rp.Response.Header != nil {
 						if location, ok := rp.Response.Header["Location"]; ok {
 							// 替换并且检查替换的变量
-							tmpl, err := template.New("test1").Parse(location)
+							tplStr, err := utils.TempStr(location, PluginVar)
 							if err != nil {
 								log.Fatal(err.Error())
 							}
-							var tpl bytes.Buffer
-							err = tmpl.Execute(&tpl, PluginVariable)
-							if err != nil {
-								log.Fatal(err.Error())
-							}
-							log.Info("[plugin] Parse:Response.Header.Location: %s ==> %s ", location, tpl.String())
-							rp.Response.Header["Location"] = tpl.String()
+							log.Info("[plugin] Parse:Response.Header.Location: %s ==> %s ", location, tplStr)
+							rp.Response.Header["Location"] = tplStr
 						}
 					}
 					// BodyFile
@@ -192,7 +187,12 @@ func (base *BasePlugin) SetInitConfig() {
 									log.Fatal("%s", err.Error())
 								}
 								log.Trace("[plugin] Parse:Response.Body.File  load %s", fname)
-								replace.BodyFiles[fname] = b
+								// todo 二进制数据可能会有问题
+								tplStr, err := utils.TempStr(string(b), PluginVar)
+								if err != nil {
+									log.Fatal(err.Error())
+								}
+								replace.BodyFiles[fname] = []byte(tplStr)
 							}
 						}
 						// replace 可能为nil
@@ -201,17 +201,12 @@ func (base *BasePlugin) SetInitConfig() {
 							rpStr := rp.Response.Body.ReplaceStr
 							if len(rpStr) > 0 {
 								for key, str := range rpStr {
-									tmpl, err := template.New("test2").Parse(str.New)
+									tplStr, err := utils.TempStr(str.New, PluginVar)
 									if err != nil {
 										log.Fatal(err.Error())
 									}
-									var tpl bytes.Buffer
-									err = tmpl.Execute(&tpl, PluginVariable)
-									if err != nil {
-										log.Fatal(err.Error())
-									}
-									log.Info("[plugin] Parse:rp.Response.Body.ReplaceStr: %s ==> %s ", str.New, tpl.String())
-									rp.Response.Body.ReplaceStr[key].New = tpl.String()
+									log.Info("[plugin] Parse:rp.Response.Body.ReplaceStr: %s ==> %s ", str.New, tplStr)
+									rp.Response.Body.ReplaceStr[key].New = tplStr
 								}
 
 							}
@@ -220,17 +215,12 @@ func (base *BasePlugin) SetInitConfig() {
 						if rp.Response.Body.Append != "" {
 							appstr := rp.Response.Body.Append
 							// 替换并且检查替换的变量
-							tmpl, err := template.New("test1").Parse(appstr)
+							tplStr, err := utils.TempStr(appstr, PluginVar)
 							if err != nil {
 								log.Fatal(err.Error())
 							}
-							var tpl bytes.Buffer
-							err = tmpl.Execute(&tpl, PluginVariable)
-							if err != nil {
-								log.Fatal(err.Error())
-							}
-							log.Info("[plugin] Parse:Response.Body.Append: %s ==> %s ", appstr, tpl.String())
-							rp.Response.Body.Append = tpl.String()
+							log.Info("[plugin] Parse:Response.Body.Append: %s ==> %s ", appstr, tplStr)
+							rp.Response.Body.Append = tplStr
 						}
 					}
 				}

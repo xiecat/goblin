@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"html"
+	"html/template"
 	"math/rand"
 	"net/url"
 	"strings"
@@ -163,4 +164,17 @@ func EleInArray(e string, arr []string) bool {
 		}
 	}
 	return false
+}
+
+func TempStr(str string, temp interface{}) (string, error) {
+	tmpl, err := template.New("tmp").Parse(str)
+	if err != nil {
+		return "", err
+	}
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, temp)
+	if err != nil {
+		return "", err
+	}
+	return tpl.String(), nil
 }

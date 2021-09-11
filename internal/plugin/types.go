@@ -10,10 +10,9 @@ var (
 	// todo 解耦
 	Plugins = make(map[string]*BasePlugin)
 	// MatchType URL 匹配类型
-	MatchType             = []string{"Word", "Prefix", "Suffix"}
-	StaticFiles           = make(map[string][]byte) //插件系统注入的js静态文件
-	PluginVariable        = &TmpVariable{}          // todo  未设计好先实现功能导致多出这个先实现功能
-	Version        string = "unknown"
+	MatchType          = []string{"Word", "Prefix", "Suffix"}
+	StaticFiles        = make(map[string][]byte) //插件系统注入的js静态文件
+	Version     string = "unknown"
 )
 
 // BasePlugin 插件结构体
@@ -39,6 +38,15 @@ type Rule struct {
 // 模板变量
 type TmpVariable struct {
 	Static string
-	Host   string // todo ip:port
 
+	FakeBaseURL string // http://www.baidu.com/
+	FakeDomain  string //ip/domain
+	FakePort    string // port
+	FakeHost    string // ip:port
+
+	RealBaseURL string // http://www.baidu.com/
+	RealDomain  string
+	RealHost    string
+	RealPort    string
+	ProxyPass   string
 }

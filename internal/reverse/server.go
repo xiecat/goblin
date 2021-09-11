@@ -98,8 +98,8 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 	//todo 待重构处理
 	// 设置代理请求头
 	ProxyHeader = options.Server.ProxyHeader
-	// 模板变量初始化
-	plugin.PluginVariable.Static = options.Server.StaticURI
+	// 模板变量 StaticURI 初始化
+	//plugin.PluginVariable.Static = options.Server.StaticURI
 	// 设置日志
 	logLevel = options.Loglevel
 	// 初始化证书
@@ -115,21 +115,48 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 	fmt.Printf("Plugin Dir: %s\n", options.Proxy.PluginDir)
 	for host, v := range options.Proxy.Sites {
 		hAddr, port, err := utils.SplitHost(host)
-		portstr := strconv.Itoa(port)
 		if err != nil {
-			panic(err)
+			log.Fatal("SplitHost: %s err", v.ProxyPass)
 		}
+		portstr := strconv.Itoa(port)
+		PluginTmpVar := &plugin.TmpVariable{}
+		// 模板变量 StaticURI 初始化
+		PluginTmpVar.Static = options.Server.StaticURI
+		PluginTmpVar.FakeDomain = hAddr
+		PluginTmpVar.FakePort = portstr
+		PluginTmpVar.FakeHost = host
+		// real
+		realURL, err := utils.ParseWithScheme(v.ProxyPass)
+		if err != nil {
+			log.Fatal("url.Parse: %s err", v.ProxyPass)
+		}
+		// 模板变量初始化
+		PluginTmpVar.ProxyPass = v.ProxyPass
+		PluginTmpVar.RealDomain = realURL.Host
+		PluginTmpVar.RealPort = realURL.Port
+		PluginTmpVar.RealHost = fmt.Sprintf("%s:%s", realURL.Host, realURL.Port)
+		rpRequestURI := realURL.RequestURI
+		realURL.RequestURI = "/"
+		PluginTmpVar.RealBaseURL = realURL.String()
+		realURL.RequestURI = rpRequestURI
+
 		if v.SSL {
 			tlsc, err := tls.LoadX509KeyPair(v.CACert, v.CAKey)
 			if err != nil {
 				log.Fatal(err.Error())
 			}
 			tlsConfig.Certificates = append(tlsConfig.Certificates, tlsc)
+			// 模板变量 FakeHost 初始化
+			PluginTmpVar.FakeBaseURL = fmt.Sprintf("https://%s", host)
+
+		} else {
+			// 模板变量 FakeHost 初始化
+			PluginTmpVar.FakeBaseURL = fmt.Sprintf("http://%s", host)
 		}
+		//代理地址
 		if options.Proxy.ProxyServerAddr != "" {
 			if v.SSL {
-
-				//todo SSL 支持
+				// SSL 支持
 				//log.Fatal("Temporarily does not support https Please wait")
 				fmt.Printf("goblin: https://%s ==> [ proxy: %s ] ==> %s, Plugin: [ %v ]\n", host, options.Proxy.ProxyServerAddr, v.ProxyPass, v.Rules)
 			} else {
@@ -184,7 +211,7 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 
 			}
 			// 初始化插件配置
-			rule.SetInitConfig()
+			rule.SetInitConfig(PluginTmpVar)
 			plugin.Plugins[host] = rule
 			plugin.Plugins[hAddr] = rule
 

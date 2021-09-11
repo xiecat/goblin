@@ -6,6 +6,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.3
 	github.com/oschwald/geoip2-golang v1.5.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
+	github.com/projectdiscovery/stringsutil v0.0.0-20210830151154-f567170afdd9
 	github.com/sinlov/qqwry-golang v0.0.0-20191204062238-bea9868bbbf4
 	github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8
 	github.com/valyala/bytebufferpool v1.0.0
