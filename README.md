@@ -469,4 +469,4 @@ X-Forwarded-For: 127.0.0.1
 3. 前端记录输入框输入
 
 ## 致谢
-感谢`小明(Master)`的使用、反馈和建议，[_0xf4n9x_](https://github.com/FanqXu) 的建议。[judas](https://github.com/JonCooperWorks/judas) 带来的灵感，还有参考其他项目，才得以快速实现
+感谢`小明(Master)`的使用、反馈和建议，[\_0xf4n9x\_](https://github.com/FanqXu) 的建议。[judas](https://github.com/JonCooperWorks/judas) 带来的灵感，还有参考其他项目，才得以快速实现

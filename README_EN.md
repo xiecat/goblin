@@ -63,11 +63,11 @@ Server: # Some timeouts on the server, just set the default value.
   ReadTimeout: 5m0s
   WriteTimeout: 5m0s
   ReadHeaderTimeout: 30s
-  ProxyHeader: RemoteAddr  # Get the real IP, the default is the accessed IP
-  StaticDir: static # For ease of use, some tools can be placed in the local static file directory
-  StaticURI: /cgmeuovumtpp/ # Static file server access directory
+  ProxyHeader: RemoteAddr  # Get the real IP, the default is the accessed IP.
+  StaticDir: static # For ease of use, some tools can be placed in the local static file directory.
+  StaticURI: /cgmeuovumtpp/ # Static file server access directory.
 Proxy:
-  MaxIdleConns: 512 # Some proxy configuration, just set the default value
+  MaxIdleConns: 512 # Some proxy configuration, just set the default value.
   IdleConnTimeout: 2m0s
   TLSHandshakeTimeout: 1m0s
   ExpectContinueTimeout: 1s
@@ -175,7 +175,7 @@ Rule:
       Status: 200
       Header: {} 
       Body: "" # 
-    notice: false # To use DingTalk reminder or not
+    notice: false # To use DingTalk reminder or not.
 - url: /test.js ## JS to be replaced, with preference for global JS.
   Match: word ## Matching method.
   InjectJs:
@@ -186,7 +186,7 @@ Variable
 
 `{{ .Static }}` corresponds to the static server directory.
 
-`Replace.Response.Header.Location`， `InjectJs`，`Replace.Response.Body.Append`,`rp.Response.Body.ReplaceStr.New` are the only ones currently available for Replace.
+`Replace.Response.Header.Location`, `InjectJs`, `Replace.Response.Body.Append`, `rp.Response.Body.ReplaceStr.New` are the only ones currently available for Replace.
 
 ## Proxy Settings
 
@@ -354,7 +354,7 @@ Description: this is a description
 WriteDate: "2021-02-11"
 Author: goblin
 Rule:
-  - url: /  ## 访问
+  - url: /  ## Access.
     Match: word
     Replace:
       - Request:
@@ -428,6 +428,7 @@ Sec-Fetch-User: ?1
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0
 X-Forwarded-For: 127.0.0.1
+
 ```
 
 ## FAQ
