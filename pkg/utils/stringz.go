@@ -26,6 +26,17 @@ func StrContainAndinList(rawStr string, checkStrList []string) bool {
 	return true
 }
 
+// StrPrefixOrinList 多字符串匹配
+func StrPrefixOrinList(rawStr string, checkStrList []string) bool {
+	for _, checkStr := range checkStrList {
+		if strings.HasPrefix(rawStr, checkStr) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // StrContainOrInList string in strings
 func StrContainOrInList(rawStr string, checkStrList []string) bool {
 	for _, checkStr := range checkStrList {
