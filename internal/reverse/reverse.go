@@ -1,6 +1,8 @@
 package reverse
 
 import (
+	"goblin/internal/plugin"
+	"goblin/pkg/utils"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -32,6 +34,43 @@ func (reverse *Reverse) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			log.Info("record:\n%s", dumpReq(r))
 		}
 		log.Info("[c->p] host: %s,RemoteAddr: %s,URI: %s", host, GetClientIP(r), r.RequestURI)
+		//response
+		//插件系统 rule 处理响应数据
+		if rules, ok := plugin.Plugins[host]; ok {
+			for _, rule := range rules.Rule {
+				urlmatch := false
+				// url 匹配规则
+				switch strings.ToLower(rule.Match) {
+				case "word":
+					urlmatch = r.URL.Path == rule.URL
+				case "prefix":
+					urlmatch = strings.HasPrefix(r.URL.Path, rule.URL)
+				case "suffix":
+					urlmatch = strings.HasPrefix(r.URL.Path, rule.URL)
+				}
+
+				if urlmatch {
+					log.Info("[plugin:%s] hit url: %s", rules.Name, r.RequestURI)
+					// replace
+					if rule.Replace != nil {
+						for _, rp := range rule.Replace {
+							// 判断请求方法是否在里面
+							if utils.EleInArray(r.Method, rp.Request.Method) {
+								log.Info("[plugin:%s.Replace.%s] Method match:%s", rules.Name, rule.URL, rp.Request.Method)
+								//处理响应数据
+								if rp.Response.Location != "" {
+									log.Info("[plugin: %s.Location]: %s", rules.Name, rp.Response.Location)
+									w.Header().Set("Location", rp.Response.Location)
+									w.WriteHeader(302)
+									return
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		// 处理缓存
 		if cache.GlobalCache.Type != "none" {
 			urlobj, err := decodeCache(r.URL.String())

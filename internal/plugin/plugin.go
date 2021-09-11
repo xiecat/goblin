@@ -164,6 +164,16 @@ func (base *BasePlugin) SetInitConfig(PluginVar *TmpVariable) {
 		if rule.Replace != nil {
 			for _, rp := range rule.Replace {
 				if rp.Response != nil {
+					if rp.Response.Location != "" {
+						// 替换并且检查替换的变量
+						tplStr, err := utils.TempStr(rp.Response.Location, PluginVar)
+						if err != nil {
+							log.Fatal(err.Error())
+						}
+						log.Info("[plugin] Parse:Response.Header.Location: %s ==> %s ", rp.Response.Location, tplStr)
+						rp.Response.Location = tplStr
+					}
+
 					if rp.Response.Header != nil {
 						if location, ok := rp.Response.Header["Location"]; ok {
 							// 替换并且检查替换的变量

@@ -23,10 +23,11 @@ type Request struct {
 
 // Response 响应头
 type Response struct {
-	Status int               `yaml:"Status"`
-	Header map[string]string `yaml:"Header"`
-	Cookie *Cookie           `yaml:"Cookie"`
-	Body   *Body             `yaml:"Body"`
+	Status   int               `yaml:"Status"`
+	Header   map[string]string `yaml:"Header"`
+	Cookie   *Cookie           `yaml:"Cookie"`
+	Body     *Body             `yaml:"Body"`
+	Location string            `yaml:"Location"`
 }
 
 type Cookie struct { // 由于有默认值需要一起设置
