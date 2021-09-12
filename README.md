@@ -489,4 +489,4 @@ X-Forwarded-For: 127.0.0.1
 
 与此同时您可以扫描下方群聊二维码加入我们的微信讨论群：
 
-<img src="./wechat_group.jpg" alt="Wechat Group" style="zoom:30%;" />
+<img alt="QR-code" src="./wechat_group.jpg" width="50%" height="50%" style="max-width:100%;">
