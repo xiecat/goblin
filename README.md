@@ -1,4 +1,5 @@
 # goblin 钓鱼演练工具
+
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/xiecat/goblin/master)
 [![Latest release](https://img.shields.io/github/v/release/xiecat/goblin)](https://github.com/xiecat/goblin/releases/latest)
 ![GitHub Release Date](https://img.shields.io/github/release-date/xiecat/goblin)
@@ -481,3 +482,11 @@ X-Forwarded-For: 127.0.0.1
 ## 致谢
 
 感谢`小明(Master)`的使用、反馈和建议，[\_0xf4n9x\_](https://github.com/FanqXu) 的建议。[judas](https://github.com/JonCooperWorks/judas) 带来的灵感，还有参考其他项目，才得以快速实现
+
+## 意见交流
+
+您可以直接在GIthub仓库中提交ISSUE：https://github.com/xiecat/goblin/issues
+
+与此同时您可以扫描下方群聊二维码加入我们的微信讨论群：
+
+<img src="./wechat_group.jpg" alt="Wechat Group" style="zoom:50%;" />
