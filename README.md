@@ -487,10 +487,10 @@ X-Forwarded-For: 127.0.0.1
 
 您可以直接在GitHub仓库中提交Issue：https://github.com/xiecat/goblin/issues
 
-与此同时您可以扫描下方群聊二维码加入我们的微信讨论群（如果群满，可以添加微信`SHN1MDQ5Cg==`，注明goblin）：
+与此同时您可以扫描下方群聊二维码加入我们的微信讨论群（如果群满，请稍等后续会更换二维码）：
 
 <p align="center">
-<img alt="QR-code" src="./wechat_group.jpg" width="43%" height="43%" style="max-width:100%;">
+<img alt="QR-code" src="./wechat_group.png" width="43%" height="43%" style="max-width:100%;">
 </p>
 
 
