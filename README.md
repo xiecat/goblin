@@ -485,7 +485,7 @@ X-Forwarded-For: 127.0.0.1
 
 ## 意见交流
 
-您可以直接在GIthub仓库中提交ISSUE：https://github.com/xiecat/goblin/issues
+您可以直接在GitHub仓库中提交Issue：https://github.com/xiecat/goblin/issues
 
 与此同时您可以扫描下方群聊二维码加入我们的微信讨论群（如果群满，可以添加微信`SHN1MDQ5Cg==`，注明goblin）：
 
