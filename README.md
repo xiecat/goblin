@@ -31,7 +31,11 @@ docker run -it --rm  -p 8083:8083 -p 8084:8084 -p 8085:8085 -p 8086:8086  becive
 docker run -it --rm -v $(pwd):/goblin/ -p 8084:8084 becivells/goblin
 ```
 
-本机访问 [http://127.0.0.1:8084](http://127.0.0.1:8084)
+本机访问 [http://127.0.0.1:808](http://127.0.0.1:8084)
+
+## 使用文档
+
+请访问: [https://xiecat.github.io/goblin-doc/](https://xiecat.github.io/goblin-doc/)
 
 如果服务器端部署需要修改 ip 地址
 
