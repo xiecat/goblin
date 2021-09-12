@@ -472,11 +472,12 @@ X-Forwarded-For: 127.0.0.1
             x-real-ip: 127.0.0.1
 ```
 
-## todo 
+## Todo 
 
 3. websocket 支持
 4. 插件系统增强（内置变量）更多匹配规则
 3. 前端记录输入框输入
 
 ## 致谢
+
 感谢`小明(Master)`的使用、反馈和建议，[\_0xf4n9x\_](https://github.com/FanqXu) 的建议。[judas](https://github.com/JonCooperWorks/judas) 带来的灵感，还有参考其他项目，才得以快速实现
