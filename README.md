@@ -490,7 +490,7 @@ X-Forwarded-For: 127.0.0.1
 与此同时您可以扫描下方群聊二维码加入我们的微信讨论群（如果群满，请稍等后续会更换二维码）：
 
 <p align="center">
-<img alt="QR-code" src="https://github.com/xiecat/goblin-doc/blob/dev/docs/.vuepress/public/wechat_group.png?raw=trueg" width="43%" height="43%" style="max-width:100%;">
+<img alt="QR-code" src="https://github.com/xiecat/goblin-doc/blob/dev/docs/.vuepress/public/wechat_group.png?raw=true" width="43%" height="43%" style="max-width:100%;">
 </p>
 
 

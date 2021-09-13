@@ -12,17 +12,11 @@ builds:
       - linux
       - windows
       - darwin
-      - openbsd
-      - netbsd
     goarch:
       - amd64
       - 386
       - arm64
       - arm
-      - mips
-      - mips64
-      - mips64le
-      - mipsle
     ignore:
       - goos: darwin
         goarch: 386
@@ -78,11 +72,3 @@ docker_manifests:
     image_templates:
       - becivells/{{ .ProjectName }}:{{ .Version }}-amd64
       - becivells/{{ .ProjectName }}:{{ .Version }}-arm64v8
-nfpms:
-  - maintainer: becivells
-    description: goblin is a red team tools for phishing
-    homepage: https://github.com/xiecat/goblin
-    license: GPL-3.0
-    formats:
-      - deb
-      - rpm
