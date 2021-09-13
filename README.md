@@ -64,7 +64,7 @@ docker run -it --rm -v $(pwd):/goblin/ -p 8084:8084 becivells/goblin
 
 ### GitHub 安装
 
-1.访问 [https://github.com/xiecat/goblin/releases](https://github.com/xiecat/goblin/releases) 从中选择适合自己操作系统的二进制文件（注:本系统全面支持国产芯片,相关文件可进微信群获取，进群二维码见文末）
+1.访问 [https://github.com/xiecat/goblin/releases](https://github.com/xiecat/goblin/releases) 从中选择适合自己操作系统的二进制文件（注:如果无满足的文件,可进微信群资讯，进群二维码见文末）
 
 2.根据需求修改配置文件的参数，配置文件详细介绍请移步使用文档 [:point_right:配置文件介绍](https://xiecat.github.io/goblin-doc/config/)
 
