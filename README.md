@@ -181,7 +181,7 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 
 您可以直接在 GitHub 仓库中提交 Issue：https://github.com/xiecat/goblin/issues
 
-与此同时您可以扫描下方群聊二维码加入我们的微信讨论群（如果群满，请稍等后续会更换二维码）：
+与此同时您可以扫描下方群聊二维码加入我们的微信讨论群（如果群满，请加微信 `SHN1MDQ5Cg==` 留言 `goblin` 即可）：
 
 <p align="center">
 <img alt="QR-code" src="https://github.com/xiecat/goblin-doc/blob/dev/docs/.vuepress/public/wechat_group.png?raw=trueg" width="43%" height="43%" style="max-width:100%;">
