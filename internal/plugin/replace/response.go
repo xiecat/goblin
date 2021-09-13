@@ -12,8 +12,9 @@ import (
 	log "unknwon.dev/clog/v2"
 )
 
-//strings.HasPrefix("image",conType)||strings.HasPrefix("video",conType)||strings.HasPrefix("audio",conType)||strings.HasPrefix("application/octet",conType)
-var allowType = []string{"text", "application/json"}
+// https://annevankesteren.nl/2005/02/javascript-mime-type
+// todo 移动至配置文件
+var allowType = []string{"text", "application/json", "application/javascript", "application/x-javascript", "message", "application/hta", "application/rtf", "application/ecmascript", "image/svg+xml", "application/xhtml", "application/xml"}
 
 func (rpRule *Response) Response(maxContentLength int, response *http.Response) error {
 	if rpRule == nil {
