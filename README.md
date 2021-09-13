@@ -6,10 +6,10 @@
 ![GitHub All Releases](https://img.shields.io/github/downloads/xiecat/goblin/total)
 [![GitHub issues](https://img.shields.io/github/issues/xiecat/goblin)](https://github.com/xiecat/goblin/issues)
 [![Docker Pulls](https://img.shields.io/docker/pulls/becivells/goblin)](https://hub.docker.com/r/becivells/goblin)
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/becivells/goblin)      
-[[English Readme Click Me]](https://github.com/xiecat/goblin/blob/master/README_EN.md)  
-goblin 是一款适用于红蓝对抗的钓鱼演练工具。通过反向代理，可以在不影响用户操作的情况下无感知的获取用户的信息，或者诱导用户操作。也可以通过使用代理方式达到隐藏服务端的目的。内置插件，通过简单的配置，快速调整网页内容以达到更好的演练效果
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/becivells/goblin)        
+Goblin 是一款适用于红蓝对抗的钓鱼演练工具。通过反向代理，可以在不影响用户操作的情况下无感知的获取用户的信息，或者诱导用户操作。也可以通过使用代理方式达到隐藏服务端的目的。内置插件，通过简单的配置，快速调整网页内容以达到更好的演练效果
 
+[:ledger:English Document](https://github.com/xiecat/goblin/blob/master/README_EN.md)   |   [:pushpin:下载地址](https://github.com/xiecat/goblin/releases)    |   [:book:使用文档](https://xiecat.github.io/goblin-doc/)
 
 ## :collision: 特点: 
 
@@ -42,7 +42,6 @@ docker run -it --rm -v $(pwd):/goblin/ -p 8084:8084 becivells/goblin
 
 ## :computer: 快速部署
 
-[:pushpin:下载地址](https://github.com/xiecat/goblin/releases)  |  [:book:使用文档](https://xiecat.github.io/goblin-doc/)
 
 ### Docker 快速部署
 
@@ -63,9 +62,9 @@ docker run -it --rm -v $(pwd):/goblin/ -p 8084:8084 becivells/goblin
 ```
 
 
-### GitHub 下载
+### Git安装
 
-1.访问 [https://github.com/xiecat/goblin/releases](https://github.com/xiecat/goblin/releases) 从中选择适合自己操作系统的二进制文件（注:未找到适配的版本,可进微信群资讯，进群二维码见文末）
+1.访问 [https://github.com/xiecat/goblin/releases](https://github.com/xiecat/goblin/releases) 从中选择适合自己操作系统的二进制文件（注:本系统全面支持国产芯片,相关文件可进微信群获取，进群二维码见文末）
 
 2.根据需求修改配置文件的参数，配置文件详细介绍请移步使用文档 [:point_right:配置文件介绍](https://xiecat.github.io/goblin-doc/config/)
 
@@ -150,7 +149,7 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 
 ## :star: 案例
 
-### [深信服 VPN 案例](https://xiecat.github.io/goblin-doc/example/sanfor.html)
+### [深信服 vpn 案例](https://xiecat.github.io/goblin-doc/example/sanfor.html)
 
 ### [Flash 钓鱼案例](https://xiecat.github.io/goblin-doc/example/flash.html)
 
@@ -182,7 +181,7 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 
 您可以直接在 GitHub 仓库中提交 Issue：https://github.com/xiecat/goblin/issues
 
-与此同时您可以扫描下方群聊二维码加入我们的微信讨论群（如果群满，请加微信 `SHN1MDQ5Cg==` 留言 `goblin` 即可）：
+与此同时您可以扫描下方群聊二维码加入我们的微信讨论群（如果群满，请稍等后续会更换二维码）：
 
 <p align="center">
 <img alt="QR-code" src="https://github.com/xiecat/goblin-doc/blob/dev/docs/.vuepress/public/wechat_group.png?raw=trueg" width="43%" height="43%" style="max-width:100%;">
