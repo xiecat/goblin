@@ -13,8 +13,6 @@ import (
 )
 
 // https://annevankesteren.nl/2005/02/javascript-mime-type
-// todo 移动至配置文件
-var allowType = []string{"text", "application/json", "application/javascript", "application/x-javascript", "message", "application/hta", "application/rtf", "application/ecmascript", "image/svg+xml", "application/xhtml", "application/xml"}
 
 func (rpRule *Response) Response(maxContentLength int, response *http.Response) error {
 	if rpRule == nil {
@@ -97,10 +95,12 @@ func (rpRule *Response) Response(maxContentLength int, response *http.Response) 
 		log.Trace("%s,Content-Type is empty", response.Request.URL)
 		return nil
 	}
-	//只允许文本类的替换
-	if !utils.StrPrefixOrinList(conType, allowType) {
-		log.Trace("%s,Content-Type is not plan: %s will ignore", response.Request.URL, conType)
-		return nil
+	if AllowMIMEType.Enable {
+		//只允许文本类的替换
+		if !utils.StrPrefixOrinList(conType, AllowMIMEType.List) {
+			log.Trace("%s,Content-Type is not plan: %s will ignore", response.Request.URL, conType)
+			return nil
+		}
 	}
 
 	// append

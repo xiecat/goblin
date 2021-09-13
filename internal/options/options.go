@@ -1,6 +1,7 @@
 package options
 
 import (
+	"goblin/internal/plugin/replace"
 	"goblin/pkg/cache"
 	"goblin/pkg/ipinfo"
 	"goblin/pkg/notice"
@@ -29,10 +30,11 @@ type Options struct {
 	LogFile    string        `yaml:"log_file"`
 	Cache      *cache.Config `yaml:"cache"`
 	// PrintConfig print config file
-	PrintConfig bool             `yaml:"-"`
-	CacheType   []string         `yaml:"CacheType"`
-	CacheSize   int64            `yaml:"CacheSize"`
-	Plugin      []*plugin.Plugin `yaml:"-"`
+	PrintConfig bool                 `yaml:"-"`
+	CacheType   []string             `yaml:"CacheType"`
+	CacheSize   int64                `yaml:"CacheSize"`
+	Plugin      []*plugin.Plugin     `yaml:"-"`
+	SupportMIME *replace.SupportMIME `yaml:"SupportMIME"`
 }
 
 type noticeConfig struct {

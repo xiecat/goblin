@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"goblin/internal/plugin/replace"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -107,6 +108,8 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 	// 初始化版本
 	Version = options.VersionInfo
 	plugin.Version = options.VersionInfo
+	// 初始化 supportMIME
+	replace.AllowMIMEType = options.SupportMIME
 	revMap = make(map[string]struct {
 		SSL     bool
 		Reverse *Reverse

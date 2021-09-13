@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"goblin/internal/plugin"
+	"goblin/internal/plugin/replace"
 	"goblin/pkg/cache"
 	"goblin/pkg/cache/redis"
 	"goblin/pkg/ipinfo"
@@ -80,6 +81,13 @@ func ParseOptions() *Options {
 					StaticPrefix: strings.ToLower(utils.RandChar(MiniLen)),
 				},
 			},
+		},
+		SupportMIME: &replace.SupportMIME{
+			Enable: false,
+			List: []string{"text", "application/json", "application/javascript",
+				"application/x-javascript", "message", "application/hta",
+				"application/rtf", "application/ecmascript", "image/svg+xml",
+				"application/xhtml", "application/xml"},
 		},
 	}
 	// 显示banner

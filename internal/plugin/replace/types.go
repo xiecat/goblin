@@ -6,6 +6,7 @@ import (
 
 var Method = []string{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE"}
 
+var AllowMIMEType = &SupportMIME{}
 var (
 	BodyFiles = make(map[string][]byte) //插件系统注入的js静态文件
 )
@@ -49,4 +50,9 @@ type ReplaceStr struct {
 	Old   string `yaml:"Old"`
 	New   string `yaml:"New"`
 	Count int    `yaml:"Count"`
+}
+
+type SupportMIME struct {
+	Enable bool     `yaml:"Enable"`
+	List   []string `yaml:"List"`
 }
