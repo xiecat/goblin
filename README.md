@@ -1,6 +1,5 @@
 # :fishing_pole_and_fish: Goblin 钓鱼演练工具
 
-![GitHub branch checks state](https://img.shields.io/github/checks-status/xiecat/goblin/master)
 [![Latest release](https://img.shields.io/github/v/release/xiecat/goblin)](https://github.com/xiecat/goblin/releases/latest)
 ![GitHub Release Date](https://img.shields.io/github/release-date/xiecat/goblin)
 ![GitHub All Releases](https://img.shields.io/github/downloads/xiecat/goblin/total)
