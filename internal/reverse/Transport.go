@@ -31,7 +31,9 @@ func (reverse *Reverse) Transport() http.RoundTripper {
 		}).DialContext,
 		Proxy: proxyURLFunc,
 		//DialContext: dialer.Dial,
-		MaxIdleConns:          reverse.MaxIdleConns,          //最大空闲连接
+		MaxIdleConns:          reverse.MaxIdleConns, //最大空闲连接
+		MaxConnsPerHost:       reverse.MaxConnsPerHost,
+		MaxIdleConnsPerHost:   reverse.MaxIdleConnsPerHost,
 		IdleConnTimeout:       reverse.IdleConnTimeout,       //空闲超时时间
 		TLSHandshakeTimeout:   reverse.TLSHandshakeTimeout,   //tls握手超时时间
 		ExpectContinueTimeout: reverse.ExpectContinueTimeout, //100-continue 超时时间

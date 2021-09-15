@@ -31,6 +31,8 @@ type Reverse struct {
 	HostProxy             map[string]*httputil.ReverseProxy
 	MaxContentLength      int           //处理响应体的最大长度
 	MaxIdleConns          int           //最大空闲连接
+	MaxConnsPerHost       int           //每个host的最大连接数量
+	MaxIdleConnsPerHost   int           //每个host的连接池最大空闲连接数,默认2
 	IdleConnTimeout       time.Duration //空闲超时时间
 	TLSHandshakeTimeout   time.Duration //tls握手超时时间
 	ExpectContinueTimeout time.Duration

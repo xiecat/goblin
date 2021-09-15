@@ -199,6 +199,8 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 					},
 					HostProxy:             make(map[string]*httputil.ReverseProxy),
 					MaxIdleConns:          options.Proxy.MaxIdleConns,
+					MaxIdleConnsPerHost:   options.Proxy.MaxIdleConnsPerHost,
+					MaxConnsPerHost:       options.Proxy.MaxConnsPerHost,
 					IdleConnTimeout:       options.Proxy.IdleConnTimeout,
 					TLSHandshakeTimeout:   options.Proxy.TLSHandshakeTimeout,
 					ExpectContinueTimeout: options.Proxy.ExpectContinueTimeout,

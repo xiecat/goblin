@@ -56,6 +56,8 @@ func ParseOptions() *Options {
 		BinDir:    utils.BinBaseDir(),
 		Proxy: &Proxy{
 			MaxIdleConns:          512,
+			MaxConnsPerHost:       20,
+			MaxIdleConnsPerHost:   20,
 			IdleConnTimeout:       120 * time.Second,
 			TLSHandshakeTimeout:   60 * time.Second,
 			ExpectContinueTimeout: 1 * time.Second,

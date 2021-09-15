@@ -6,6 +6,8 @@ import (
 
 type Proxy struct {
 	MaxIdleConns          int           `yaml:"MaxIdleConns"`
+	MaxIdleConnsPerHost   int           `yaml:"MaxIdleConnsPerHost"`
+	MaxConnsPerHost       int           `yaml:"MaxConnsPerHost"`
 	IdleConnTimeout       time.Duration `yaml:"IdleConnTimeout"`
 	TLSHandshakeTimeout   time.Duration `yaml:"TLSHandshakeTimeout"`
 	ExpectContinueTimeout time.Duration `yaml:"ExpectContinueTimeout"`
