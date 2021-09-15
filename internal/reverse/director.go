@@ -47,11 +47,11 @@ func (reverse *Reverse) Director(host string) func(request *http.Request) {
 			// explicitly disable User-Agent so it's not set to default value
 			request.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36")
 		}
-		//log.Println("request.URL.Path：", request.URL.Path, "request.URL.RawQuery：", request.URL.RawQuery,"remote.Path",remote.Path)
+
 		request.Header.Del("Accept-Encoding")
 		request.Header.Del("Content-Encoding")
 
-		//	删除默认代理头
+		// 删除默认代理头
 		request.Header["X-Forwarded-For"] = nil
 		request.Header.Del("X-Real-Ip")
 
