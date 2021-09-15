@@ -51,6 +51,10 @@ func (reverse *Reverse) Director(host string) func(request *http.Request) {
 		request.Header.Del("Accept-Encoding")
 		request.Header.Del("Content-Encoding")
 
+		//	删除默认代理头
+		request.Header["X-Forwarded-For"] = nil
+		request.Header.Del("X-Real-Ip")
+
 		//  插件系统 rule 处理请求数据
 		if rules, ok := plugin.Plugins[host]; ok {
 			for _, rule := range rules.Rule {
