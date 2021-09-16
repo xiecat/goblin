@@ -8,7 +8,7 @@
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/becivells/goblin)        
 Goblin 是一款适用于红蓝对抗的钓鱼演练工具。通过反向代理，可以在不影响用户操作的情况下无感知的获取用户的信息，或者诱导用户操作。也可以通过使用代理方式达到隐藏服务端的目的。内置插件，通过简单的配置，快速调整网页内容以达到更好的演练效果
 
-[:ledger:English Document](https://github.com/xiecat/goblin/blob/master/README_EN.md)   |   [:pushpin:下载地址](https://github.com/xiecat/goblin/releases)    |   [:book:使用文档](http://goblin.xiecat.fun/)
+[:ledger:English Document](https://github.com/xiecat/goblin/blob/master/README_EN.md)   |   [:pushpin:下载地址](https://github.com/xiecat/goblin/releases)    |   [:book:使用文档](https://goblin.xiecat.fun/)
 
 ## :collision: 特点: 
 
@@ -65,7 +65,7 @@ docker run -it --rm -v $(pwd):/goblin/ -p 8084:8084 becivells/goblin
 
 1.访问 [https://github.com/xiecat/goblin/releases](https://github.com/xiecat/goblin/releases) 从中选择适合自己操作系统的二进制文件（注:如果无满足的文件,可进微信群咨询，进群二维码见文末）
 
-2.根据需求修改配置文件的参数，配置文件详细介绍请移步使用文档 [:point_right:配置文件介绍](https://xiecat.github.io/goblin-doc/config/)
+2.根据需求修改配置文件的参数，配置文件详细介绍请移步使用文档 [:point_right:配置文件介绍](https://goblin.xiecat.fun/config/)
 
 命令行参数如下
 
@@ -88,7 +88,7 @@ Usage of goblin:
 ```
 #### :warning: 注意
 
-如果是在服务器端部署则需要修改 ip 地址
+如果是在服务器端部署则需要修改 ip 地址如有疑问可以参考 [site](https://goblin.xiecat.fun/config/site.html) 讲解
 
 ```yaml
   Site:
@@ -105,12 +105,12 @@ Usage of goblin:
 ## :triangular_ruler: 插件系统
 
 
-插件系统介绍详细使用方法见文档[:point_right:插件系统](https://xiecat.github.io/goblin-doc/plugin/)
+插件系统介绍详细使用方法见文档[:point_right:插件系统](https://goblin.xiecat.fun/plugin/)
 
 
 ## :battery: 高阶用法
 
-goblin 使用反向代理，前端使用 cf 等代理 goblin， 即可隐藏 goblin 主机
+goblin 使用反向代理，前端使用 cf 等代理 goblin， 即可隐藏 goblin 主机 具体文档可以参考[goblin 代理配置](https://goblin.xiecat.fun/guide/proxy.html)
 
 ### JS 注入
 
@@ -120,6 +120,8 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 
 #### 使用 InjectJs 注入
 
+具体文档可以参考 [goblin InjectJs 模块](https://goblin.xiecat.fun/plugin/injectjs.html)
+
 ```yaml
 - url: /base.js # 待替换的js 尽量选择全局 js
   Match: word   # 匹配方式
@@ -128,6 +130,8 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 ```
 
 #### 使用 replace 注入
+
+具体文档可以参考 [goblin Replace 模块](https://goblin.xiecat.fun/plugin/replace.html)
 
 ```yaml
 - url: /art_103.html # 待替换的网页
@@ -148,20 +152,10 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 
 ## :star: 案例
 
-### [深信服 vpn 案例](https://xiecat.github.io/goblin-doc/example/sanfor.html)
+### [Flash 钓鱼案例](https://goblin.xiecat.fun/example/flash.html)
 
-### [Flash 钓鱼案例](https://xiecat.github.io/goblin-doc/example/flash.html)
+更多案例请加微信群询问。或者提 issus 酌情增删
 
-## :question: FAQ
-1. 有些网站改完会直接 302 跳转到正常页面怎么也取消不了,最终发现解决方法加 xff xfi 头
-```yaml
-      - Request:
-          Method:
-            - GET
-          Header:
-            x-forwarded-for: 127.0.0.1
-            x-real-ip: 127.0.0.1
-```
 
 ## :bar_chart: Todo 
 
@@ -185,7 +179,7 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 
 ## :loudspeaker: 免责声明
 本工具仅能在取得足够合法授权的企业安全建设以及攻防演练中使用，在使用本工具过程中，您应确保自己所有行为符合当地的法律法规。 如您在使用本工具的过程中存在任何非法行为，您将自行承担所有后果，本工具所有开发者和所有贡献者不承担任何法律及连带责任。 除非您已充分阅读、完全理解并接受本协议所有条款，否则，请您不要安装并使用本工具。 您的使用行为或者您以其他任何明示或者默示方式表示接受本协议的，即视为您已阅读并同意本协议的约束。
-  
+
 ## :laughing: Stargazers
 [![Stargazers over time](https://starchart.cc/xiecat/goblin.svg)](https://starchart.cc/xiecat/goblin)
 
