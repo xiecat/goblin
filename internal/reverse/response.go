@@ -21,6 +21,9 @@ func (reverse *Reverse) ModifyResponse(shost string) func(response *http.Respons
 		// Stop CSPs and anti-XSS headers from ruining our fun
 		response.Header.Del("Content-Security-Policy")
 		response.Header.Del("X-XSS-Protection")
+		if response.Header.Get("Access-Control-Allow-Origin") != "" {
+			response.Header.Set("Access-Control-Allow-Origin", "*")
+		}
 		response.Header.Add("GoblinServer", Version)
 		err := reverse.modifyLocationHeader(shost, response)
 		if err != nil {
