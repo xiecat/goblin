@@ -110,7 +110,7 @@ Usage of goblin:
 
 ## :battery: 高阶用法
 
-goblin 使用反向代理，前端使用 cf 等代理 goblin， 即可隐藏 goblin 主机 具体文档可以参考[goblin 代理配置](https://goblin.xiecat.fun/guide/proxy.html)
+goblin 使用反向代理，前端使用 cf 等代理 goblin， 即可隐藏 goblin 主机 具体文档可以参考 [goblin 代理配置](https://goblin.xiecat.fun/guide/proxy.html)
 
 ### JS 注入
 
