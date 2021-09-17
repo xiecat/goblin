@@ -53,13 +53,14 @@ func (options *Options) validataProxySite() {
 		}
 		// ssl 检查
 		if v.SSL {
-			if !utils.FileExist(v.CACert) {
-				log.Fatal("Host: %s ,CACert File not find: %s", host, v.CACert)
+			certName, keyName := options.Proxy.CertDir+"/"+v.CACert, options.Proxy.CertDir+"/"+v.CAKey
+			if !utils.FileExist(certName) {
+				log.Fatal("Host: %s ,CACert File not find: %s/%s", host, certName)
 			}
-			if !utils.FileExist(v.CAKey) {
-				log.Fatal("Host: %s ,Cakey File not find: %s", host, v.CAKey)
+			if !utils.FileExist(keyName) {
+				log.Fatal("Host: %s ,Cakey File not find: %s", host, keyName)
 			}
-			_, err := tls.LoadX509KeyPair(v.CACert, v.CAKey)
+			_, err := tls.LoadX509KeyPair(certName, keyName)
 			if err != nil {
 				log.Fatal("cert format err: %s", err.Error())
 			}

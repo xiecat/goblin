@@ -61,7 +61,7 @@ func (s *Servers) startListeners() {
 	}
 
 	for _, srvHTTPS := range s.HTTPS {
-		go func(srv *http.Server) { log.Fatal("%v", srv.ListenAndServeTLS("", "")) }(srvHTTPS)
+		go func(srv *http.Server) { srv.ListenAndServeTLS("", "") }(srvHTTPS)
 	}
 }
 
@@ -115,6 +115,18 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 		Reverse *Reverse
 		Listen  string
 	})
+	// 默认证书配置
+	certName, keyName := options.Proxy.CertDir+"/"+"default.crt", options.Proxy.CertDir+"/"+"default.key"
+	// 检查 cert 默认证书是否存在
+	if utils.FileExist(certName) && utils.FileExist(keyName) {
+		tlsc, err := tls.LoadX509KeyPair(certName, keyName)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		tlsConfig.Certificates = append(tlsConfig.Certificates, tlsc)
+	} else {
+		log.Fatal("default cert error")
+	}
 	fmt.Printf("Plugin Dir: %s\n", options.Proxy.PluginDir)
 	for host, v := range options.Proxy.Sites {
 		hAddr, port, err := utils.SplitHost(host)
@@ -144,7 +156,7 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 		realURL.RequestURI = rpRequestURI
 
 		if v.SSL {
-			tlsc, err := tls.LoadX509KeyPair(v.CACert, v.CAKey)
+			tlsc, err := tls.LoadX509KeyPair(options.Proxy.CertDir+"/"+v.CACert, options.Proxy.CertDir+"/"+v.CAKey)
 			if err != nil {
 				log.Fatal(err.Error())
 			}
