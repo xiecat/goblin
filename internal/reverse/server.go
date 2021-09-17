@@ -61,7 +61,7 @@ func (s *Servers) startListeners() {
 	}
 
 	for _, srvHTTPS := range s.HTTPS {
-		go func(srv *http.Server) { srv.ListenAndServeTLS("", "") }(srvHTTPS)
+		go func(srv *http.Server) { log.Fatal("%v", srv.ListenAndServeTLS("", "")) }(srvHTTPS)
 	}
 }
 
