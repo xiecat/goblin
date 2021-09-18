@@ -149,10 +149,16 @@ func (reverse *Reverse) modifyLocationHeader(shost string, response *http.Respon
 	log.Trace("Location: %s", location.String())
 	target := reverse.AllowSite[shost]
 	targetHost, _ := url.Parse(target)
+	locationHost, err := utils.Parse(location.String())
+	if err != nil {
+		return err
+	}
 
-	if targetHost.Host == location.Host {
+	if targetHost.Host == locationHost.Host {
 		location.Scheme = ""
 		location.Host = ""
+	} else {
+		log.Trace("url: %s,Location: %s", response.Request.URL, location.String())
 	}
 	if location.String() == "" {
 		log.Trace("url: %s,Location is empty", response.Request.URL)
@@ -171,7 +177,7 @@ func (reverse *Reverse) modifyCookieHeader(shost string, response *http.Response
 	var mcook []string
 	addr, _, err := utils.SplitHost(shost)
 	if err != nil {
-		return err
+		addr = shost
 	}
 	for _, value := range rcookies {
 		// 关闭 Secure
