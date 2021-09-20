@@ -151,7 +151,7 @@ For details, please refer to [goblin Replace module](https://goblin.xiecat.fun/p
 
 ### [Flash Phishing Case](https://goblin.xiecat.fun/example/flash.html)
 
-For more cases, please enter the WeChat group for discussion, or submit an [issue](https://github.com/xiecat/goblin/issues/new/). 
+For more cases, please enter the Discord group for discussion, or submit an [issue](https://github.com/xiecat/goblin/issues/new/). 
 
 ## :bar_chart: Todo
 
@@ -167,7 +167,7 @@ Thanks to Master(小明)'s use, feedback and suggestions, and [\_0xf4n9x\_](http
 
 You can submit an [issue](https://github.com/xiecat/goblin/issues/new/). 
 
-At the same time you can also join our Goblin WeChat discussion group, but since the group is currently full of 200 people, please add WeChat `SHN1MDQ5Cg==` (message goblin), you can apply to enter the Goblin WeChat group.
+In the meantime, you can join our [Discord discussion group](https://discord.gg/BXrSruuU).
 
 ## :loudspeaker: Disclaimers
 

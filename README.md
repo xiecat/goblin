@@ -154,7 +154,7 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 
 ### [Flash 钓鱼案例](https://goblin.xiecat.fun/example/flash.html)
 
-更多案例请加微信群询问。或者提 issus 酌情增删
+更多案例请加微信群询问。或者提 issue 酌情增删
 
 
 ## :bar_chart: Todo 
