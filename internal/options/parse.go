@@ -84,6 +84,7 @@ func ParseOptions() *Options {
 			MaxContentLength:      -1, // 默认不检查
 			ProxyCheckURL:         "https://myip.ipip.net/",
 			PluginDir:             "plugins",
+			CertDir:               "cert",
 			Sites: ProxySite{
 				"127.0.0.1:8084": {
 					ListenIP:     "0.0.0.0",
@@ -132,6 +133,24 @@ func ParseOptions() *Options {
 		os.Exit(0)
 	}
 	logging.AccLogger = options.OutLog.New()
+
+	// 检查 cert 插件目录是否存在
+	if !utils.FileExist(options.Proxy.CertDir) {
+		fmt.Printf("Plugin not exist will create: %s", options.Proxy.CertDir)
+		err = os.Mkdir(options.Proxy.CertDir, 755) //nolint:
+		if err != nil {
+			log.Fatal("%s", err.Error())
+		}
+		//https://www.cnblogs.com/feiquan/p/11429065.html
+		os.Chmod(options.Proxy.CertDir, 0755) //nolint:
+	}
+	//
+	certName, KeyName := options.Proxy.CertDir+"/"+"default.crt", options.Proxy.CertDir+"/"+"default.key"
+	// 检查 cert 默认证书是否存在
+	if !utils.FileExist(certName) || !utils.FileExist(KeyName) {
+		utils.MakeDefautCert(certName, KeyName)
+	}
+
 	// 检查 plugin 插件目录是否存在
 	if !utils.FileExist(options.Proxy.PluginDir) {
 		fmt.Printf("Plugin not exist will create: %s", options.Proxy.PluginDir)

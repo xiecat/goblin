@@ -15,6 +15,7 @@ type Proxy struct {
 	ProxyServerAddr       string        `yaml:"ProxyServerAddr"` // socks5://
 	ProxyCheckURL         string        `yaml:"ProxyCheckURL"`
 	PluginDir             string        `yaml:"PluginDir"`
+	CertDir               string        `yaml:"CertDir"`
 	Sites                 ProxySite     `yaml:"Site"`
 }
 
