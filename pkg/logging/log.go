@@ -1,0 +1,93 @@
+package logging
+
+import (
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	es6 "github.com/olivere/elastic"
+	es7 "github.com/olivere/elastic/v7"
+	"github.com/sirupsen/logrus"
+	logrus_syslog "github.com/sirupsen/logrus/hooks/syslog"
+	prefixed "github.com/x-cray/logrus-prefixed-formatter"
+	els6 "gopkg.in/sohlich/elogrus.v3"
+	els7 "gopkg.in/sohlich/elogrus.v7"
+	"log/syslog"
+	"os"
+	"path"
+	"path/filepath"
+)
+
+var (
+	AccLogger   *logrus.Logger
+	ErrorLogger *logrus.Logger
+)
+
+func (es *EsLog) Es7Setup(level logrus.Level) (log *logrus.Logger) {
+	log = logrus.New()
+	log.SetLevel(level)
+	client, err := es7.NewClient(es7.SetURL(es.DSN))
+	if err != nil {
+		log.Panic(err)
+	}
+	hook, err := els7.NewAsyncElasticHook(client, es.Host, es.LogLevel, es.Index)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Hooks.Add(hook)
+	return log
+}
+
+func (es *EsLog) Es6Setup(level logrus.Level) (log *logrus.Logger) {
+	log = logrus.New()
+	log.SetLevel(level)
+	client, err := es6.NewClient(es6.SetURL(es.DSN))
+	if err != nil {
+		log.Panic(err)
+	}
+	hook, err := els6.NewAsyncElasticHook(client, es.Host, es.LogLevel, es.Index)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Hooks.Add(hook)
+	return log
+}
+
+func (flog *FileLog) FileSetup(level logrus.Level) (log *logrus.Logger) {
+
+	log = &logrus.Logger{
+		Formatter: &prefixed.TextFormatter{
+			ForceFormatting: true,
+			FullTimestamp:   true,
+			TimestampFormat: "2006-01-02 15:04:05",
+		},
+	}
+	if flog.Mode == "json" {
+		log.SetFormatter(&logrus.JSONFormatter{})
+	}
+	log.SetLevel(level)
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatalf("logging.Setup, fail to get current dir")
+
+	}
+
+	file := path.Join(dir, flog.DSN)
+	fileOutput, err := rotatelogs.New(file)
+	if err != nil {
+		log.Fatalf("logging.Setup, fail to create '%s': %v", flog.DSN, err)
+	}
+	log.SetOutput(fileOutput)
+	return log
+}
+
+func (slog *Syslog) SyslogSetup(level logrus.Level) (log *logrus.Logger) {
+	log = logrus.New()
+	if slog.Mode == "json" {
+		log.SetFormatter(&logrus.JSONFormatter{})
+	}
+	log.SetLevel(level)
+	hook, err := logrus_syslog.NewSyslogHook("udp", slog.DSN, syslog.LOG_INFO, "")
+	if err != nil {
+		log.Fatalf("logging.Setup, fail to create '%s': %v", slog.DSN, err)
+	}
+	log.Hooks.Add(hook)
+	return log
+}

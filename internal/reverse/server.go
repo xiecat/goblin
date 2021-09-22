@@ -102,7 +102,7 @@ func initReverse(options *options.Options) (revMap map[string]struct {
 	// 模板变量 StaticURI 初始化
 	//plugin.PluginVariable.Static = options.Server.StaticURI
 	// 设置日志
-	logLevel = options.Loglevel
+	logLevel = options.OutLog.LogLevel
 	// 初始化证书
 	tlsConfig.Certificates = []tls.Certificate{}
 	// 初始化版本

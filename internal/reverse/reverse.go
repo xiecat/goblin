@@ -1,7 +1,9 @@
 package reverse
 
 import (
+	"github.com/sirupsen/logrus"
 	"goblin/internal/plugin"
+	"goblin/pkg/logging"
 	"goblin/pkg/utils"
 	"net/http"
 	"net/http/httputil"
@@ -26,12 +28,20 @@ func (reverse *Reverse) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		r.URL.Host = remote.Host
 		r.Host = remote.Host
 		//dump req log
-		if logLevel == 1 {
-			log.Trace("record:\n%s", dumpReq(r))
+		if logLevel == logrus.InfoLevel {
+			logging.AccLogger.WithFields(logrus.Fields{
+				"method":     r.Method,
+				"url":        r.URL.RequestURI(),
+				"request_ip": GetClientIP(r),
+			}).Info(dumpJson(r))
 		}
 		// dump
-		if logLevel == 2 && r.Method == "POST" {
-			log.Info("record:\n%s", dumpReq(r))
+		if logLevel == logrus.WarnLevel && r.Method == "POST" {
+			logging.AccLogger.WithFields(logrus.Fields{
+				"method":     r.Method,
+				"url":        r.URL.RequestURI(),
+				"request_ip": GetClientIP(r),
+			}).Info(dumpJson(r))
 		}
 		log.Info("[c->p] host: %s,RemoteAddr: %s,URI: %s", host, GetClientIP(r), r.RequestURI)
 		//response

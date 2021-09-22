@@ -1,0 +1,23 @@
+sudo: required
+language: go
+go:
+    - tip
+    
+notifications:
+    email: false
+
+services:
+  - docker
+  
+before_script:
+  - sudo sysctl -w vm.max_map_count=262144
+
+before_install:
+  - docker run -d -p 7777:9200 --name elk elasticsearch:alpine
+  - docker logs elk
+  - docker inspect elk
+  - travis_wait 5
+
+install:
+  - go get -v ./...
+  - travis_wait 5

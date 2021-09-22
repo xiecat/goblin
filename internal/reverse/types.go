@@ -2,6 +2,7 @@ package reverse
 
 import (
 	"crypto/tls"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -18,10 +19,10 @@ var (
 	Bufferpool      = &bufferPool{ByteBuffer: &bytebufferpool.ByteBuffer{}}
 	cacheRspFile    = &CacheFile{}
 	ProxyServerAddr *url.URL
-	ProxyHeader     string = "RemoteAddr"
-	logLevel        int    = 2
-	tlsConfig              = &tls.Config{}
-	Version         string = "unknown"
+	ProxyHeader     = "RemoteAddr"
+	logLevel        = logrus.InfoLevel
+	tlsConfig       = &tls.Config{}
+	Version         = "unknown"
 )
 
 // Reverse 反代配置

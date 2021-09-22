@@ -125,6 +125,10 @@ func (options *Options) validateLogLevel() {
 	if options.Loglevel < 1 || options.Loglevel > 5 {
 		log.Fatal("logLevel range [1,5].and you set: %d", options.Loglevel)
 	}
+	err := options.OutLog.ValidateType()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 // validatePlugin 验证使用的插件是否正确

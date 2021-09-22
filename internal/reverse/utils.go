@@ -25,3 +25,8 @@ func dumpReq(r *http.Request) string {
 	req, _ := httputil.DumpRequest(r, true)
 	return fmt.Sprintf(info, r.URL.RequestURI(), GetClientIP(r), string(req), r.URL.RequestURI())
 }
+
+func dumpJson(r *http.Request) string {
+	req, _ := httputil.DumpRequest(r, true)
+	return string(req)
+}

@@ -3,11 +3,13 @@ package options
 import (
 	"flag"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"goblin/internal/plugin"
 	"goblin/internal/plugin/replace"
 	"goblin/pkg/cache"
 	"goblin/pkg/cache/redis"
 	"goblin/pkg/ipinfo"
+	"goblin/pkg/logging"
 	"goblin/pkg/notice"
 	"goblin/pkg/utils"
 	"gopkg.in/yaml.v2"
@@ -24,6 +26,24 @@ func ParseOptions() *Options {
 		ConfigFile:  "goblin.yaml",
 		VersionInfo: Version,
 		LogFile:     "goblin.log",
+		OutLog: &logging.Config{
+			Type:     "file",
+			LogLevel: logrus.InfoLevel,
+			FileLog: &logging.FileLog{
+				Mode: "text",
+				DSN:  "access.log",
+			},
+			EsLog: &logging.EsLog{
+				LogLevel: logrus.InfoLevel,
+				DSN:      "http://127.0,0.1:9001",
+				Host:     "localhost",
+				Index:    "goblin",
+			},
+			Syslog: &logging.Syslog{
+				DSN:  "127.0.0.1:514",
+				Mode: "text",
+			},
+		},
 		Cache: &cache.Config{
 			Type:    "self",
 			ExpTime: 10 * time.Minute,
@@ -111,6 +131,7 @@ func ParseOptions() *Options {
 		options.writeConfig()
 		os.Exit(0)
 	}
+	logging.AccLogger = options.OutLog.New()
 	// 检查 plugin 插件目录是否存在
 	if !utils.FileExist(options.Proxy.PluginDir) {
 		fmt.Printf("Plugin not exist will create: %s", options.Proxy.PluginDir)

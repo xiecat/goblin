@@ -4,6 +4,7 @@ import (
 	"goblin/internal/plugin/replace"
 	"goblin/pkg/cache"
 	"goblin/pkg/ipinfo"
+	"goblin/pkg/logging"
 	"goblin/pkg/notice"
 	"plugin"
 	"time"
@@ -35,6 +36,7 @@ type Options struct {
 	CacheSize   int64                `yaml:"CacheSize"`
 	Plugin      []*plugin.Plugin     `yaml:"-"`
 	SupportMIME *replace.SupportMIME `yaml:"SupportMIME"`
+	OutLog      *logging.Config
 }
 
 type noticeConfig struct {
