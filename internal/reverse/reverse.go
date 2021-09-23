@@ -34,14 +34,12 @@ func (reverse *Reverse) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				"url":        r.URL.RequestURI(),
 				"request_ip": GetClientIP(r),
 			}).Info(dumpJson(r))
-		}
-		// dump
-		if logLevel == logrus.WarnLevel && r.Method == "POST" {
+		} else if logLevel == logrus.WarnLevel && r.Method == "POST" {
 			logging.AccLogger.WithFields(logrus.Fields{
 				"method":     r.Method,
 				"url":        r.URL.RequestURI(),
 				"request_ip": GetClientIP(r),
-			}).Info(dumpJson(r))
+			}).Warn(dumpJson(r))
 		}
 		log.Info("[c->p] host: %s,RemoteAddr: %s,URI: %s", host, GetClientIP(r), r.RequestURI)
 		//response

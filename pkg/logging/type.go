@@ -13,6 +13,8 @@ import (
 var outType []string = []string{"es7", "es6", "file", "syslog"}
 var modeType = []string{"json", "text"}
 
+//var logType = []string{"info", "warn", "warning", "error", "fatal"}
+
 type Config struct {
 	Type     string
 	LogLevel logrus.Level
@@ -53,8 +55,13 @@ func (conf *Config) New() (log *logrus.Logger) {
 
 func (cf *Config) ValidateType() error {
 	if !utils.StrEqualOrInList(cf.Type, outType) {
-		return fmt.Errorf("log  value %s type must %s ", cf.Type, strings.Join(outType, ","))
+		return fmt.Errorf("log value %s type must %s ", cf.Type, strings.Join(outType, ","))
 	}
+	// 永远不会执行
+	//if !utils.StrEqualOrInList(cf.LogLevel.String(), logType) {
+	//	return fmt.Errorf("log type %s type must %s ", cf.LogLevel.String(), strings.Join(logType, ","))
+	//}
+
 	switch cf.Type {
 	case "file":
 		if !utils.StrEqualOrInList(cf.FileLog.Mode, modeType) {
