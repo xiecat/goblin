@@ -88,7 +88,7 @@ func (reverse *Reverse) ModifyResponse(shost string) func(response *http.Respons
 									//todo 抑制消息, 异步告警
 									target := reverse.AllowSite[shost]
 									realHost := GetClientIP(response.Request)
-									addr, _, _ := utils.SplitHost(realHost)
+									addr, _, err := utils.SplitHost(realHost)
 									ipLocation := ipinfo.DB.Area(addr)
 									log.Info("[dintalk]:目标: %s, 来源地址: %s, 地理位置: %s, 请求链接:%s", target, realHost, ipLocation, response.Request.RequestURI)
 									go func(target, remote, location, ruleName, path string) {

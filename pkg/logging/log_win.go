@@ -1,20 +1,16 @@
-//go:build !windows && !nacl && !plan9
-// +build !windows,!nacl,!plan9
+//go:build windows || nacl || plan9
+// +build windows nacl plan9
 
 package logging
 
 import (
-	"bufio"
-	"fmt"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	es6 "github.com/olivere/elastic"
 	es7 "github.com/olivere/elastic/v7"
 	"github.com/sirupsen/logrus"
-	logrus_syslog "github.com/sirupsen/logrus/hooks/syslog"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 	els6 "gopkg.in/sohlich/elogrus.v3"
 	els7 "gopkg.in/sohlich/elogrus.v7"
-	"log/syslog"
 	"os"
 	"path"
 	"path/filepath"
@@ -94,19 +90,5 @@ func (flog *FileLog) FileSetup(level logrus.Level) (log *logrus.Logger) {
 		log.Fatalf("logging.Setup, fail to create '%s': %v", flog.DSN, err)
 	}
 	log.SetOutput(fileOutput)
-	return log
-}
-
-func (slog *Syslog) SyslogSetup(level logrus.Level) (log *logrus.Logger) {
-	log = logrus.New()
-	if slog.Mode == "json" {
-		log.SetFormatter(&logrus.JSONFormatter{})
-	}
-	log.SetLevel(level)
-	hook, err := logrus_syslog.NewSyslogHook("udp", slog.DSN, syslog.LOG_INFO, "")
-	if err != nil {
-		log.Fatalf("logging.Setup, fail to create '%s': %v", slog.DSN, err)
-	}
-	log.Hooks.Add(hook)
 	return log
 }

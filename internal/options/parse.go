@@ -35,7 +35,7 @@ func ParseOptions() *Options {
 			},
 			EsLog: &logging.EsLog{
 				LogLevel: logrus.InfoLevel,
-				DSN:      "http://127.0,0.1:9001",
+				DSN:      "http://127.0.0.1:9200",
 				Host:     "localhost",
 				Index:    "goblin",
 			},

@@ -36,7 +36,7 @@ type Options struct {
 	CacheSize   int64                `yaml:"CacheSize"`
 	Plugin      []*plugin.Plugin     `yaml:"-"`
 	SupportMIME *replace.SupportMIME `yaml:"SupportMIME"`
-	OutLog      *logging.Config
+	OutLog      *logging.Config      `yaml:"OutLog"`
 }
 
 type noticeConfig struct {

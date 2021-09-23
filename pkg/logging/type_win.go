@@ -1,5 +1,5 @@
-//go:build !windows && !nacl && !plan9
-// +build !windows,!nacl,!plan9
+//go:build windows || nacl || plan9
+// +build windows nacl plan9
 
 package logging
 
@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-var outType []string = []string{"es7", "es6", "file", "syslog"}
+var outType []string = []string{"es7", "es6", "file"}
 var modeType = []string{"json", "text"}
 
 type Config struct {
@@ -44,9 +44,6 @@ func (conf *Config) New() (log *logrus.Logger) {
 		return conf.EsLog.Es6Setup(conf.LogLevel)
 	case "file":
 		return conf.FileLog.FileSetup(conf.LogLevel)
-	case "syslog":
-		return conf.Syslog.SyslogSetup(conf.LogLevel)
-
 	}
 	return
 }
@@ -61,10 +58,7 @@ func (cf *Config) ValidateType() error {
 			return fmt.Errorf("file log  value %s type must %s ", cf.Type, strings.Join(modeType, ","))
 		}
 	case "syslog":
-		if !utils.StrEqualOrInList(cf.Syslog.Mode, modeType) {
-			return fmt.Errorf("syslog  value %s type must %s ", cf.Type, strings.Join(modeType, ","))
-		}
-
+		return fmt.Errorf("no support syslog")
 	}
 	return nil
 }
