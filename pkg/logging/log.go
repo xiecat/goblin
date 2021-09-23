@@ -6,6 +6,11 @@ package logging
 import (
 	"bufio"
 	"fmt"
+	"log/syslog"
+	"os"
+	"path"
+	"path/filepath"
+
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	es6 "github.com/olivere/elastic"
 	es7 "github.com/olivere/elastic/v7"
@@ -14,10 +19,6 @@ import (
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 	els6 "gopkg.in/sohlich/elogrus.v3"
 	els7 "gopkg.in/sohlich/elogrus.v7"
-	"log/syslog"
-	"os"
-	"path"
-	"path/filepath"
 )
 
 var (
