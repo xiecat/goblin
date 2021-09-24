@@ -9,6 +9,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strings"
+	"time"
 
 	"goblin/pkg/cache"
 
@@ -29,17 +30,27 @@ func (reverse *Reverse) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		r.Host = remote.Host
 		//dump req log
 		if logLevel == logrus.InfoLevel {
+			start := time.Now()
+			reqraw := dumpJson(r)
 			logging.AccLogger.WithFields(logrus.Fields{
 				"method":     r.Method,
 				"url":        r.URL.RequestURI(),
 				"request_ip": GetClientIP(r),
-			}).Info(dumpJson(r))
+				"user-agent": r.UserAgent(),
+				"cost":       time.Since(start),
+				"type":       "clientReq",
+			}).Info(reqraw)
 		} else if logLevel == logrus.WarnLevel && r.Method == "POST" {
+			start := time.Now()
+			reqraw := dumpJson(r)
 			logging.AccLogger.WithFields(logrus.Fields{
 				"method":     r.Method,
 				"url":        r.URL.RequestURI(),
 				"request_ip": GetClientIP(r),
-			}).Warn(dumpJson(r))
+				"user-agent": r.UserAgent(),
+				"cost":       time.Since(start),
+				"type":       "clientReq",
+			}).Warn(reqraw)
 		}
 		log.Info("[c->p] host: %s,RemoteAddr: %s,URI: %s", host, GetClientIP(r), r.RequestURI)
 		//response

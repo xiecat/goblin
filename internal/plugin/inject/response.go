@@ -5,16 +5,19 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	log "unknwon.dev/clog/v2"
 )
 
 func (inject *InjectJs) ReplaceJs(response *http.Response) error {
+	start := time.Now()
 	// append
 	if inject == nil {
 		return nil
 	}
 	if inject.EvilJs != "" {
+		defer log.Info("[time] url: %s,payload:%s, inject hand time: %v", response.Request.RequestURI, inject.EvilJs, time.Since(start))
 		log.Info("Host:%s EvilJs: %s", response.Request.URL.Path, inject.EvilJs)
 		body, err := ioutil.ReadAll(response.Body)
 		if err != nil {

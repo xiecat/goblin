@@ -5,13 +5,16 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"goblin/internal/plugin"
 	"goblin/pkg/cache"
 	"goblin/pkg/ipinfo"
+	"goblin/pkg/logging"
 	"goblin/pkg/notice"
 	"goblin/pkg/utils"
 
+	"github.com/sirupsen/logrus"
 	log "unknwon.dev/clog/v2"
 )
 
@@ -80,8 +83,17 @@ func (reverse *Reverse) ModifyResponse(shost string) func(response *http.Respons
 							if utils.EleInArray(response.Request.Method, dp.Request.Method) {
 								//处理响应数据
 								dete, msg := dp.Determine(reverse.MaxContentLength, response)
+								start := time.Now()
 								if dete {
-									dplog := dumpReq(response.Request)
+									dplog := dumpJson(response.Request)
+									logging.AccLogger.WithFields(logrus.Fields{
+										"method":     response.Request.Method,
+										"url":        response.Request.URL.RequestURI(),
+										"request_ip": GetClientIP(response.Request),
+										"cost":       time.Since(start),
+										"user-agent": response.Request.UserAgent(),
+										"type":       "realReq",
+									}).Warn(dplog)
 									log.Warn("[Plugin:%s.%s]record: %s\n", rules.Name, rule.URL, dplog)
 								}
 								if msg {

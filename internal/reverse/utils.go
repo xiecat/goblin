@@ -29,6 +29,9 @@ func dumpReq(r *http.Request) string {
 
 func dumpJson(r *http.Request) string {
 	req, _ := httputil.DumpRequest(r, true)
+	if r.Method == "POST" {
+		return string(req) + "\n\n"
+	}
 	return string(req)
 }
 

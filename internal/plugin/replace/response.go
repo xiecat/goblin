@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	log "unknwon.dev/clog/v2"
 )
@@ -15,6 +16,8 @@ import (
 // https://annevankesteren.nl/2005/02/javascript-mime-type
 
 func (rpRule *Response) Response(maxContentLength int, response *http.Response) error {
+	start := time.Now()
+	defer log.Info("[time] url: %s, replace hand time: %v", response.Request.RequestURI, time.Since(start))
 	if rpRule == nil {
 		return nil
 	}

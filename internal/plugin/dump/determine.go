@@ -7,11 +7,14 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	log "unknwon.dev/clog/v2"
 )
 
 func (dump *Dump) Determine(maxContentLength int, response *http.Response) (dete, notice bool) {
+	start := time.Now()
+	defer log.Info("[time] url: %s, dump hand time: %v", response.Request.RequestURI, time.Since(start))
 	if dump == nil {
 		return false, false
 	}
