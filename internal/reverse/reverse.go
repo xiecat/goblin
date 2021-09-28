@@ -126,5 +126,6 @@ func (reverse *Reverse) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		proxy.ServeHTTP(w, r)
 		return
 	}
+	w.Header().Set("GoblinServer", Version)
 	w.Write([]byte("403: Host forbidden"))
 }
