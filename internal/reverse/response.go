@@ -24,8 +24,16 @@ func (reverse *Reverse) ModifyResponse(shost string) func(response *http.Respons
 		// Stop CSPs and anti-XSS headers from ruining our fun
 		response.Header.Del("Content-Security-Policy")
 		response.Header.Del("X-XSS-Protection")
+		//https://stackoverflow.com/questions/27358966/how-to-set-x-frame-options-on-iframe
+		response.Header.Del("X-Frame-Options")
 		if response.Header.Get("Access-Control-Allow-Origin") != "" {
-			response.Header.Set("Access-Control-Allow-Origin", "*")
+			//https://stackoverflow.com/questions/1653308/access-control-allow-origin-multiple-origin-domains
+			if response.Request.Header.Get("Origin") != "" {
+				response.Header.Set("Access-Control-Allow-Origin", response.Request.Header.Get("Origin"))
+			} else {
+				response.Header.Set("Access-Control-Allow-Origin", "*")
+			}
+
 		}
 		response.Header.Add("GoblinServer", Version)
 		err := reverse.modifyLocationHeader(shost, response)
