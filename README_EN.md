@@ -155,8 +155,7 @@ For more cases, please enter the Discord group for discussion, or submit an [iss
 
 ## :bar_chart: Todo
 
-- Support websocket.
-- Plugin system enhancement (built-in variables), more matching rules.
+
 - Front-end record input box input.
 
 ## :pray: Acknowledgements
