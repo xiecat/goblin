@@ -77,12 +77,16 @@ func (reverse *Reverse) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							if utils.EleInArray(r.Method, rp.Request.Method) {
 								log.Info("[plugin:%s.Replace.%s] Method match:%s", rules.Name, rule.URL, rp.Request.Method)
 								//处理响应数据
-								if rp.Response.Location != "" {
-									log.Info("[plugin: %s.Location]: %s", rules.Name, rp.Response.Location)
-									w.Header().Set("Location", rp.Response.Location)
-									w.WriteHeader(302)
-									return
+
+								if rp.Response != nil {
+									if rp.Response.Location != "" {
+										log.Info("[plugin: %s.Location]: %s", rules.Name, rp.Response.Location)
+										w.Header().Set("Location", rp.Response.Location)
+										w.WriteHeader(302)
+										return
+									}
 								}
+
 							}
 						}
 					}

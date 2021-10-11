@@ -169,10 +169,11 @@ func (reverse *Reverse) modifyLocationHeader(shost string, response *http.Respon
 	log.Trace("Location: %s", location.String())
 	target := reverse.AllowSite[shost]
 	targetHost, _ := url.Parse(target)
-	locationHost, err := utils.Parse(location.String())
+	locationHost, err := url.Parse(location.String())
 	if err != nil {
 		return err
 	}
+	log.Trace("targetHost.Host:%s, locationHost.Host: %s", targetHost.Host, locationHost.Host)
 
 	if targetHost.Host == locationHost.Host {
 		location.Scheme = ""
@@ -181,7 +182,7 @@ func (reverse *Reverse) modifyLocationHeader(shost string, response *http.Respon
 		log.Trace("url: %s,Location: %s", response.Request.URL, location.String())
 	}
 	if location.String() == "" {
-		log.Trace("url: %s,Location is empty", response.Request.URL)
+		log.Trace("url: %s, Location is empty", response.Request.URL)
 		return nil
 	}
 	response.Header.Set("Location", location.String())

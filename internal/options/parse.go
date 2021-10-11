@@ -160,7 +160,7 @@ func ParseOptions() *Options {
 		}
 		//https://www.cnblogs.com/feiquan/p/11429065.html
 		os.Chmod(options.Proxy.PluginDir, 0755) //nolint:
-		// plugin demo.yaml
+		// plugin pam.yaml
 		demo := `Name: demo
 Version: 0.0.1
 Description: this is a description
@@ -178,7 +178,7 @@ Rule:
       Response: # 替换的响应内容
         Body:
           Append: <script type='text/javascript'>setTimeout(function(){alert("hello goblin!");}, 2000);</script> # 追加字符串`
-		pluginDemo := options.Proxy.PluginDir + "/" + "demo.yaml"
+		pluginDemo := options.Proxy.PluginDir + "/" + "pam.yaml"
 		err = ioutil.WriteFile(pluginDemo, []byte(demo), 0755) //nolint:
 		if err != nil {
 			log.Fatal("%s", err.Error())
