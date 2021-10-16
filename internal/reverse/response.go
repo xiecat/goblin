@@ -35,7 +35,7 @@ func (reverse *Reverse) ModifyResponse(shost string) func(response *http.Respons
 			}
 
 		}
-		response.Header.Add("GoblinServer", Version)
+		//response.Header.Add("GoblinServer", Version)
 		err := reverse.modifyLocationHeader(shost, response)
 		if err != nil {
 			log.Info(err.Error())
