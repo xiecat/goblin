@@ -178,7 +178,7 @@ Rule:
       Response: # 替换的响应内容
         Body:
           Append: <script type='text/javascript'>setTimeout(function(){alert("hello goblin!");}, 2000);</script> # 追加字符串`
-		pluginDemo := options.Proxy.PluginDir + "/" + "pam.yaml"
+		pluginDemo := options.Proxy.PluginDir + "/" + "demo.yaml"
 		err = ioutil.WriteFile(pluginDemo, []byte(demo), 0755) //nolint:
 		if err != nil {
 			log.Fatal("%s", err.Error())
