@@ -3,9 +3,9 @@ package qqwry
 import (
 	"os"
 	"sync"
-	"time"
 
 	"github.com/sinlov/qqwry-golang/qqwry"
+
 	log "unknwon.dev/clog/v2"
 )
 
@@ -32,19 +32,13 @@ var wry *qqwry.QQwry
 var once sync.Once
 
 func checkUpdate() {
-	info, err := os.Stat("qqwry.dat")
+	_, err := os.Stat("qqwry.dat")
 	if err != nil {
 		if os.IsNotExist(err) {
 			err := download()
 			if err != nil {
 				log.Warn("Download qqwry.dat failed, caused by:%v, recommend to download it by yourself otherwise the `IpArea` will be null", err)
 			}
-		}
-	} else if -time.Until(info.ModTime()) > 7*24*time.Hour {
-		log.Info("Updating qqwry.dat...")
-		err := download()
-		if err != nil {
-			log.Warn("Update qqwry.dat failed, please download qqwry.dat by yourself")
 		}
 	}
 }
