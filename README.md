@@ -166,14 +166,14 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 ## :pray: 致谢
 
 
-感谢`小明(Master)`的使用、反馈和建议，[\_0xf4n9x\_](https://github.com/FanqXu) 的建议。[judas](https://github.com/JonCooperWorks/judas) 带来的灵感，还有参考其他项目，才得以快速实现
+感谢`小明(Master)`的使用、反馈和建议，[\_0xf4n9x\_](https://github.com/_0xf4n9x_) 的建议。[judas](https://github.com/JonCooperWorks/judas) 带来的灵感，还有参考其他项目，才得以快速实现
 
 
 ## :speech_balloon: 意见交流
 
 您可以直接在 GitHub 仓库中提交 Issue：https://github.com/xiecat/goblin/issues
 
-与此同时您还可以加入到我们的Goblin微信讨论群，但由于目前群已经满200人了，所以请加微信 `SHN1MDQ5Cg==` 留言 `goblin`，即可申请进入微信群。
+与此同时您还可以加入到我们的Goblin微信讨论群，但由于目前群已经满200人了，所以请加微信 `YmVjaXZlbGxz` 留言 `goblin`，即可申请进入微信群。
 
 
 ## :loudspeaker: 免责声明
