@@ -56,7 +56,7 @@ COPY goblin /usr/bin/goblin
 ENTRYPOINT ["/usr/bin/goblin"]
 WORKDIR /goblin
 ```
-工作目录在 goblin ，首先创建目录，切换到目录下，执行
+工作目录在 Goblin ，首先创建目录，切换到目录下，执行
 ```shell
 docker run -it --rm -v $(pwd):/goblin/ -p 8084:8084 becivells/goblin
 ```
@@ -111,11 +111,11 @@ Usage of goblin:
 
 ## :battery: 高阶用法
 
-goblin 使用反向代理，前端使用 cf 等代理 goblin， 即可隐藏 goblin 主机 具体文档可以参考 [goblin 代理配置](https://goblin.xiecat.fun/guide/proxy.html)
+goblin 使用反向代理，前端使用 cf 等代理 Goblin， 即可隐藏 Goblin 主机 具体文档可以参考 [goblin 代理配置](https://goblin.xiecat.fun/guide/proxy.html)
 
 ### JS 注入
 
-js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<script\> ` 标签)，一种是跟着全局 js 文件走各有好处。
+js 注入有两种方式一种是跟着页面走(Replace 需要自己追加 ` \<script\> ` 标签)，一种是跟着全局 js 文件走各有好处。
 
 这两种其实都是使用 Replace 功能
 
@@ -173,7 +173,7 @@ js 注入有两种方式一种是跟着页面走(Replace 需要自己追加` \<s
 
 您可以直接在 GitHub 仓库中提交 Issue：https://github.com/xiecat/goblin/issues
 
-与此同时您还可以加入到我们的Goblin微信讨论群，但由于目前群已经满200人了，所以请加微信 `YmVjaXZlbGxz` 留言 `goblin`，即可申请进入微信群。
+与此同时您还可以加入到我们的 Goblin 微信讨论群，但由于目前群已经满 200 人了，所以请加微信 `YmVjaXZlbGxz` 留言 `goblin`，即可申请进入微信群。
 
 
 ## :loudspeaker: 免责声明
