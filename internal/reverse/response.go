@@ -72,7 +72,7 @@ func (reverse *Reverse) ModifyResponse(shost string) func(response *http.Respons
 				case "prefix":
 					urlmatch = strings.HasPrefix(response.Request.URL.Path, rule.URL)
 				case "suffix":
-					urlmatch = strings.HasPrefix(response.Request.URL.Path, rule.URL)
+					urlmatch = strings.HasSuffix(response.Request.URL.Path, rule.URL)
 				}
 
 				if urlmatch {
