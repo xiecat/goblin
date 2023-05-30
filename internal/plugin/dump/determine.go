@@ -3,7 +3,7 @@ package dump
 import (
 	"bytes"
 	"goblin/pkg/utils"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -58,7 +58,7 @@ func (dump *Dump) Determine(maxContentLength int, response *http.Response) (dete
 				return true, dump.Notice
 			}
 
-			body, err := ioutil.ReadAll(response.Body)
+			body, err := io.ReadAll(response.Body)
 			if err != nil {
 				log.Info("%s", err.Error())
 				return false, dump.Notice
@@ -66,9 +66,30 @@ func (dump *Dump) Determine(maxContentLength int, response *http.Response) (dete
 			if bytes.Contains(body, []byte(dump.Response.Body)) {
 				return true, dump.Notice
 			}
-			response.Body = ioutil.NopCloser(bytes.NewReader(body))
+			response.Body = io.NopCloser(bytes.NewReader(body))
 		}
 	}
 
 	return false, dump.Notice
+}
+
+func (dump *Dump) NeedCache(r *http.Request) bool {
+	start := time.Now()
+	defer log.Info("[time] url: %s, dump cache hand time: %v", r.RequestURI, time.Since(start))
+	if dump == nil {
+		return false
+	}
+
+	// 如何没有任何请求方式支持直接返回
+	if len(dump.Request.Method) == 0 {
+		return false
+	}
+	// 判断 method 是否符合 dump 规则
+	if utils.EleInArray(r.Method, dump.Request.Method) {
+		//为 nil 不匹配  Response
+		return true
+
+	}
+
+	return false
 }

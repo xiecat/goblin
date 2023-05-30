@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 	"fmt"
+	cacheNew "github.com/patrickmn/go-cache"
 	"time"
 
 	log "unknwon.dev/clog/v2"
@@ -15,6 +16,7 @@ import (
 var ctx = context.Background()
 
 var GlobalCache *Cache
+var DumpCache *cacheNew.Cache
 
 func (db *Config) Init() {
 	c := &Cache{
@@ -32,6 +34,7 @@ func (db *Config) Init() {
 		log.Fatal("unsupported database type: %s", db.Type)
 	}
 	GlobalCache = c
+	DumpCache = cacheNew.New(15*time.Second, 60*time.Second)
 }
 
 func (cache *Cache) Set(key string, v interface{}) {
@@ -67,6 +70,24 @@ func (cache *Cache) Get(key string) (interface{}, error) {
 		return nil, fmt.Errorf("no cache")
 	case "redis":
 		return cache.Redis.Get(ctx, key).Result()
+	case "none":
+		return nil, fmt.Errorf("no cache")
+	}
+	return nil, fmt.Errorf("no cache type")
+}
+
+func (cache *Cache) GetOnce(key string) (interface{}, error) {
+	switch cache.Type {
+	case "self":
+		if val, hasKey := cache.Self.Get(key); hasKey {
+			cache.Self.Delete(key)
+			return val, nil
+		}
+		return nil, fmt.Errorf("no cache")
+	case "redis":
+		result, err := cache.Redis.Get(ctx, key).Result()
+		cache.Redis.Del(ctx, key).Result()
+		return result, err
 	case "none":
 		return nil, fmt.Errorf("no cache")
 	}

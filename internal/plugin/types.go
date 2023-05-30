@@ -26,7 +26,7 @@ type BasePlugin struct {
 	UseBody     bool    `yaml:"-"` //响应body解包一次
 }
 
-//Rule 规则结构体
+// Rule 规则结构体
 type Rule struct {
 	URL      string
 	Match    string             `yaml:"Match"`

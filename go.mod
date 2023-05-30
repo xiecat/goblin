@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/go-redis/redis/v8 v8.11.3
+	github.com/google/uuid v1.1.2
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/olivere/elastic v6.2.37+incompatible
 	github.com/olivere/elastic/v7 v7.0.29

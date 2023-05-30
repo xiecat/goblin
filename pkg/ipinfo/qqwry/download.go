@@ -1,5 +1,5 @@
 // Package qqwry
-//nolint
+// nolint
 package qqwry
 
 import (

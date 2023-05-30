@@ -52,11 +52,22 @@ func (reverse *Reverse) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				"type":       "clientReq",
 			}).Warn(reqraw)
 		}
+
 		log.Info("[c->p] host: %s,RemoteAddr: %s,URI: %s", host, GetClientIP(r), r.RequestURI)
 		//response
 		//插件系统 rule 处理响应数据
 		if rules, ok := plugin.Plugins[host]; ok {
+			//dump
+
 			for _, rule := range rules.Rule {
+				for _, dp := range rule.Dump {
+					if dp.NeedCache(r) {
+						uuidstr := utils.GenerateUUID()
+						r.Header["X-Request-ID"] = []string{uuidstr}
+						cache.DumpCache.Set(uuidstr, dumpJson(r), 60*time.Second)
+					}
+				}
+
 				urlmatch := false
 				// url 匹配规则
 				switch strings.ToLower(rule.Match) {

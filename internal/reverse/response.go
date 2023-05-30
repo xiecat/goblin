@@ -26,14 +26,14 @@ func (reverse *Reverse) ModifyResponse(shost string) func(response *http.Respons
 		response.Header.Del("X-XSS-Protection")
 		//https://stackoverflow.com/questions/27358966/how-to-set-x-frame-options-on-iframe
 		response.Header.Del("X-Frame-Options")
-		
+
 		response.Header.Del("Content-Security-Policy-Report-Only")
 
 		// 删除缓存策略
 		response.Header.Del("Expires")
 		response.Header.Del("Last-Modified")
 		response.Header.Del("Date")
-		
+
 		if response.Header.Get("Access-Control-Allow-Origin") != "" {
 			//https://stackoverflow.com/questions/1653308/access-control-allow-origin-multiple-origin-domains
 			if response.Request.Header.Get("Origin") != "" {
@@ -101,7 +101,14 @@ func (reverse *Reverse) ModifyResponse(shost string) func(response *http.Respons
 								dete, msg := dp.Determine(reverse.MaxContentLength, response)
 								start := time.Now()
 								if dete {
-									dplog := dumpJson(response.Request)
+									uid := strings.Join(response.Request.Header["X-Request-ID"], "")
+									dplog, isCache := cache.DumpCache.Get(uid)
+									cache.DumpCache.Delete(uid)
+									if !isCache {
+										log.Warn("[Plugin:%s.%s]not cache : %s\n", rules.Name, rule.URL, dplog)
+										dplog = dumpJson(response.Request)
+									}
+
 									logging.AccLogger.WithFields(logrus.Fields{
 										"method":     response.Request.Method,
 										"url":        response.Request.URL.RequestURI(),

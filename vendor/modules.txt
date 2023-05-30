@@ -20,6 +20,9 @@ github.com/go-redis/redis/v8/internal/pool
 github.com/go-redis/redis/v8/internal/proto
 github.com/go-redis/redis/v8/internal/rand
 github.com/go-redis/redis/v8/internal/util
+# github.com/google/uuid v1.1.2
+## explicit
+github.com/google/uuid
 # github.com/jonboulle/clockwork v0.2.2
 ## explicit; go 1.13
 # github.com/josharian/intern v1.0.0
